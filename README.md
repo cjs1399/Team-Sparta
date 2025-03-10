@@ -5,7 +5,8 @@
 
 # Ch.2 프로그래밍 기초 주차 과제
 
-필수 기능: Issues: #1(https://github.com/cjs1399/Team-Sparta/issues/1), #2(https://github.com/cjs1399/Team-Sparta/issues/2)
+필수 기능: Issues: https://github.com/cjs1399/Team-Sparta/issues/1, https://github.com/cjs1399/Team-Sparta/issues/2
+
 도전 기능: Issues:
 
 # 필수 기능
