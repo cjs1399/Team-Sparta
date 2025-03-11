@@ -7,7 +7,6 @@
 
 import Foundation
 
- print(makeRandomNumbers())
 
-baseballGameLV2()
-
+let game = BaseballGame()
+game.start()
