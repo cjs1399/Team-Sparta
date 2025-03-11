@@ -14,14 +14,16 @@ enum selectOptionType: String {
 }
 
 final class BaseballGame {
-    var randomNumbers: [Int] = []
-    var inputNumbers: [Int] = []
-    var gameHistory: [String] = []
+    private var randomNumbers: [Int] = []
+    private var inputNumbers: [Int] = []
+    private var gameHistory: [Int: Int] = [:]
+    private var gameCount: Int = 0
+    private var tryCount: Int = 0
     
     func start() {
         while true {
             print("환영합니다! 원하시는 번호를 입력해주세요\n1. 게임 시작하기  2. 게임 기록 보기  3. 종료하기")
-            
+        
             guard let input = readLine(), let option = selectOptionType(rawValue: input) else {
                 print("올바른 옵션을 입력해주세요!")
                 continue
@@ -31,9 +33,10 @@ final class BaseballGame {
             case .play:
                 playGame()
             case .history:
-                print("게임 기록을 보여주는 옵션입니다.")
+                printHistory()
             case .end:
                 print("게임을 종료하는 옵션입니다.")
+                return
             }
         }
     }
@@ -49,10 +52,13 @@ extension BaseballGame {
         while playGame {
             guard let input = readLine(), checkValue(input) else { continue }
             inputNumbers = input.map { Int(String($0))! }
+            tryCount += 1
             let result = checkBallCount(inputNumbers, randomNumbers)
             if result[0] == 3 {
                 print("정답입니다!")
                 playGame = false
+                gameHistory[gameCount] = tryCount
+                gameCount += 1
             } else if result[0] == 0 && result[1] == 0 {
                 print("Nothing")
             } else {
@@ -60,6 +66,7 @@ extension BaseballGame {
             }
         }
         
+        tryCount = 0
     }
     
     private func makeRandomNumbers() -> [Int] {
@@ -99,5 +106,20 @@ extension BaseballGame {
             else if randomNumbers.contains(input[i]) { balls += 1 }
         }
         return [strikes, balls]
+    }
+    
+    private func printHistory() {
+        if gameHistory.isEmpty {
+            print("게임을 플레이한 기록이 없습니다")
+        } else {
+            print("< 게임 기록 보기 >")
+            for (game, attempts) in gameHistory.sorted(by: { $0.key < $1.key }) {
+                print("\(game)번째 게임: 시도 횟수 - \(attempts)")
+            }
+        }
+    }
+    
+    private func setGameCount() {
+        
     }
 }
