@@ -25,7 +25,7 @@ final class BaseballGame {
             print("환영합니다! 원하시는 번호를 입력해주세요\n1. 게임 시작하기  2. 게임 기록 보기  3. 종료하기")
         
             guard let input = readLine(), let option = selectOptionType(rawValue: input) else {
-                print("올바른 옵션을 입력해주세요!")
+                print("올바른 숫자를 입력해주세요!")
                 continue
             }
             
@@ -35,12 +35,11 @@ final class BaseballGame {
             case .history:
                 printHistory()
             case .end:
-                print("게임을 종료하는 옵션입니다.")
+                print("< 숫자 야구 게임을 종료합니다 >")
                 return
             }
         }
     }
-    
 }
 
 extension BaseballGame {
@@ -117,9 +116,5 @@ extension BaseballGame {
                 print("\(game)번째 게임: 시도 횟수 - \(attempts)")
             }
         }
-    }
-    
-    private func setGameCount() {
-        
     }
 }
