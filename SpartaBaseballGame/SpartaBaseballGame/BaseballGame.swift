@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 사용자가 선택할 수 있는 업션 타입을 정의
 enum selectOptionType: String {
     case play = "1"
     case history = "2"
@@ -42,6 +43,7 @@ final class BaseballGame {
     }
 }
 
+
 extension BaseballGame {
     
     private func playGame() {
@@ -49,6 +51,7 @@ extension BaseballGame {
         var playGame: Bool = true
         print("<게임을 시작합니다>\n숫자를 입력하세요")
         while playGame {
+            // guard let을 통해 사용자의 입력 값을 검증
             guard let input = readLine(), checkValue(input) else { continue }
             inputNumbers = input.map { Int(String($0))! }
             tryCount += 1
@@ -64,7 +67,6 @@ extension BaseballGame {
                 print("\(result[0])스트라이크 \(result[1])볼")
             }
         }
-        
         tryCount = 0
     }
     
@@ -80,7 +82,10 @@ extension BaseballGame {
         // filter를 사용해 0에서 9까지의 숫자 중 firstRandomNumber와 같은 수를 제거합니다
         // shuffled 남은 숫자를 랜덤하게 섞고 앞의 2개의 숫자를 선택한다
     }
-
+    
+    // 사용자의 입력한 숫자가 올바른지 검증하는 함수입니다.
+    // 조건1: 3자리 숫자
+    // 조건2: 중복된 숫자가 없어야 함
     private func checkValue(_ input: String) -> Bool {
         guard input.allSatisfy({ $0.isNumber }) else {
             print("세 자리 숫자를 입력해주세요.")
@@ -97,6 +102,7 @@ extension BaseballGame {
         return true
     }
     
+    // 사용자의 입력과 랜덤 숫자를 비교하여 스트라이크 / 볼 개수를 반환하는 함수입니다.
     private func checkBallCount(_ input: [Int], _ randomNumbers: [Int]) -> [Int] {
         var strikes: Int = 0
         var balls: Int = 0
