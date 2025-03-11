@@ -34,13 +34,16 @@ final class BaseballGame {
 
 extension BaseballGame {
     func makeRandomNumbers() -> [Int] {
-        // baseballGameLV1
-        // 조건1: 1에서 9까지의 서로 다른 임의의 수 3개를 정한다.
-        // 조건2: 랜덤으로 만들어진다
-        return Array(1...9).shuffled().prefix(3).map { $0 }
-        
-        // Array(1...9).shuffled()를 사용하면 1~9까지의 숫자를 무작위로 섞어 배열 반환
-        // prefix(3)을 이용해 위에서 만들어진 배열에서 앞에서 3개의 숫자를 추출
+        // baseballGameLV3
+        // 조건1: 0에서 9까지의 서로 다른 임의의 수 3개를 정한다.
+        // 조건2: 맨 앞자리에 0이 오는 것은 불가능합니다.
+        let firstRandomNumber = Array(1...9).shuffled().first!
+        let randomNumber = Array(0...9).filter { $0 != firstRandomNumber }.shuffled().prefix(2)
+        return [firstRandomNumber] + randomNumber
+    
+        // 조건 1을 충족하기 위해 첫 번째 숫자는 1에서 9까지의 임의의 숫자 1개를 생성합니다.
+        // filter를 사용해 0에서 9까지의 숫자 중 firstRandomNumber와 같은 수를 제거합니다
+        // shuffled 남은 숫자를 랜덤하게 섞고 앞의 2개의 숫자를 선택한다
     }
 
     func checkValue(_ input: String) -> Bool {
