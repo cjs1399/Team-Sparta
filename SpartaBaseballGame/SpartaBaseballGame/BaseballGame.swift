@@ -61,10 +61,17 @@ extension BaseballGame {
                 playGame = false
                 gameHistory[gameCount] = tryCount
                 gameCount += 1
-            } else if result[0] == 0 && result[1] == 0 {
-                print("Nothing")
             } else {
-                print("\(result[0])스트라이크 \(result[1])볼")
+                switch (result[0], result[1]) {
+                case (0, 0):
+                    print("Nothing")
+                case (0, _):
+                    print("\(result[1])볼")
+                case (_, 0):
+                    print("\(result[0])스트라이크")
+                default:
+                    print("\(result[0])스트라이크 \(result[1])볼")
+                }
             }
         }
         tryCount = 0
