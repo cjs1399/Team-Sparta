@@ -94,6 +94,11 @@ extension BaseballGame {
     // 조건1: 3자리 숫자
     // 조건2: 중복된 숫자가 없어야 함
     private func checkValue(_ input: String) -> Bool {
+        guard !input.contains(" ") else {
+            print("입력 값에 공백이 포함되어 있습니다.")
+            return false
+        }
+        
         guard input.allSatisfy({ $0.isNumber }) else {
             print("세 자리 숫자를 입력해주세요.")
             return false
