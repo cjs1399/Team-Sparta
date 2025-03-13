@@ -8,5 +8,10 @@
 import Foundation
 
 
-let game = BaseballGame()
-game.start()
+//let game = BaseballGame()
+//game.start()
+
+
+var test = "1 23"
+test = test.compactMap(Int($0)!)
+print(test)
