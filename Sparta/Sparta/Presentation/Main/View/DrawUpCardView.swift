@@ -67,13 +67,13 @@ class DrawUpCardView: BaseView {
         backgroundImageView.addSubviews(titleLable, subTitleLable)
         
         titleLable.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(SizeLiterals.Screen.screenHeight * 170 / 812)
-            $0.leading.equalToSuperview().offset(SizeLiterals.Screen.screenWidth * 15 / 375)
+            $0.top.equalToSuperview().offset(170)
+            $0.leading.equalToSuperview().offset(15)
         }
         
         subTitleLable.snp.makeConstraints {
-            $0.top.equalTo(titleLable.snp.bottom).offset(SizeLiterals.Screen.screenHeight * 5 / 812)
-            $0.leading.equalToSuperview().offset(SizeLiterals.Screen.screenWidth * 15 / 375)
+            $0.top.equalTo(titleLable.snp.bottom).offset(5)
+            $0.leading.equalToSuperview().offset(15)
         }
         
         backgroundImageView.snp.makeConstraints {

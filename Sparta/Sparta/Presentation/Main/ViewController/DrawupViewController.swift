@@ -102,7 +102,7 @@ final class DrawupViewController: BaseViewController {
         view.addSubviews(drawUpCardView, inputTextView, saveButton)
         
         drawUpCardView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(SizeLiterals.Screen.screenHeight * 150 / 812)
+            $0.top.equalToSuperview().offset(150)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(SizeLiterals.Screen.screenHeight * 300 / 812)
             $0.height.equalTo(SizeLiterals.Screen.screenHeight * 257 / 812)
@@ -110,14 +110,14 @@ final class DrawupViewController: BaseViewController {
         }
         
         inputTextView.snp.makeConstraints {
-            $0.top.equalTo(drawUpCardView.snp.bottom).offset(SizeLiterals.Screen.screenHeight * 20 / 812)
+            $0.top.equalTo(drawUpCardView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(SizeLiterals.Screen.screenWidth * 343 / 375)
             $0.height.equalTo(SizeLiterals.Screen.screenHeight * 141 / 812)
         }
         
         saveButton.snp.makeConstraints {
-            $0.top.equalTo(inputTextView.snp.bottom).offset(SizeLiterals.Screen.screenHeight * 11 / 812)
+            $0.top.equalTo(inputTextView.snp.bottom).offset(11)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(SizeLiterals.Screen.screenWidth * 343 / 375)
             $0.height.equalTo(SizeLiterals.Screen.screenHeight * 44 / 812)

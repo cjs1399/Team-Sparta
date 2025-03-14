@@ -56,14 +56,14 @@ final class TeamSpartaiOSViewController: BaseViewController {
         backgroundImageView.addSubviews(plusButton, drawupCollectionView)
         
         plusButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(SizeLiterals.Screen.screenWidth * 15 / 375)
-            $0.bottom.equalToSuperview().offset(-SizeLiterals.Screen.screenHeight * 57 / 812)
+            $0.leading.equalToSuperview().offset(15)
+            $0.bottom.equalToSuperview().offset(-57)
         }
         
         drawupCollectionView.snp.makeConstraints {
-            $0.leading.equalTo(plusButton.snp.trailing).offset(SizeLiterals.Screen.screenWidth * 15 / 375)
-            $0.trailing.equalToSuperview().offset(-SizeLiterals.Screen.screenWidth * 15 / 375)
-            $0.bottom.equalToSuperview().offset(-SizeLiterals.Screen.screenHeight * 57 / 812)
+            $0.leading.equalTo(plusButton.snp.trailing).offset(15)
+            $0.trailing.equalToSuperview().offset(-15)
+            $0.bottom.equalToSuperview().offset(-57)
             $0.height.equalTo(SizeLiterals.Screen.screenWidth * 100 / 375)
         }
         
