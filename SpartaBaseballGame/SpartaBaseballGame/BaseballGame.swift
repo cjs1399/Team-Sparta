@@ -76,6 +76,7 @@ extension BaseballGame {
         }
         tryCount = 0
     }
+
     
     private func makeRandomNumbers() -> [Int] {
         // baseballGameLV3
@@ -95,12 +96,12 @@ extension BaseballGame {
     // 조건2: 중복된 숫자가 없어야 함
     private func checkValue(_ input: String) -> Bool {
         guard !input.contains(" ") else {
-            print("입력 값에 공백이 포함되어 있습니다.")
+            print("현재 입력값은 공백이 포함되어 있습니다.")
             return false
         }
         
         guard input.allSatisfy({ $0.isNumber }) else {
-            print("세 자리 숫자를 입력해주세요.")
+            print("현재 입력값은 3자리 숫자가 아닙니다.")
             return false
         }
         guard input.count == 3 else {
