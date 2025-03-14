@@ -39,7 +39,6 @@ final class TeamSpartaiOSViewController: BaseViewController {
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] _ in
                 self?.presentToDrawupViewController()
-                self?.viewModel.inputs.didDismissDrawupViewController()
             })
             .disposed(by: disposeBag)
         
