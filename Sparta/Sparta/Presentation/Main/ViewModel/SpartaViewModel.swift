@@ -16,6 +16,9 @@ protocol SpartaViewModelInput {
     func didTapSaveButton(with image: UIImage, text: String)
     func setTextView(with value: String)
     func didTapCollectionViewCell(with text: String, date: Date)
+    
+    func didDismissDrawupViewController()
+    func didDismissDrawupViewControllerIsSaveButtonEnabled()
 }
 
 protocol SpartaViewModelOutput {
@@ -67,6 +70,14 @@ final class SpartaViewModel: SpartaViewModelInput, SpartaViewModelOutput, Sparta
     func didTapCollectionViewCell(with text: String, date: Date) {
         cardSubTitleText.accept(text)
         careCreatedAt.accept(date)
+    }
+    
+    func didDismissDrawupViewController() {
+        presentToDrawupViewController.accept(false)
+    }
+    
+    func didDismissDrawupViewControllerIsSaveButtonEnabled() {
+        isSaveButtonEnabled.accept(false)
     }
     
     func fetchDrawupData() {

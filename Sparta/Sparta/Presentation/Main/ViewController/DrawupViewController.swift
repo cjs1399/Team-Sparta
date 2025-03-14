@@ -64,8 +64,8 @@ final class DrawupViewController: BaseViewController {
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] _ in
                 self?.dismiss(animated: true)
-                self?.viewModel.outputs.dismissToDrawupViewController.accept(false)
-                self?.viewModel.outputs.isSaveButtonEnabled.accept(false)
+                self?.viewModel.inputs.didDismissDrawupViewController()
+                self?.viewModel.inputs.didDismissDrawupViewControllerIsSaveButtonEnabled()
             })
             .disposed(by: disposeBag)
         
