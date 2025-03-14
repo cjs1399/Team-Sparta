@@ -15,12 +15,26 @@ class PlusButtonView: BaseView {
     // MARK: - UI Components
     
     private let plusButton = UIButton()
+    private lazy var dashedBorderLayer =  CAShapeLayer()
+    
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        drawDashedBorder()
+    }
     
     override func setStyles() {
         plusButton.do {
             $0.setImage(ImageLiterals.plus_ic, for: .normal)
             $0.layer.cornerRadius = 8
             $0.layer.masksToBounds = true
+        }
+        
+        dashedBorderLayer.do {
+            $0.strokeColor = UIColor(hex: "#000000").cgColor
+            $0.lineDashPattern = [6, 3]
+            $0.fillColor = nil
+            $0.lineWidth = 2
         }
     }
     
@@ -35,11 +49,6 @@ class PlusButtonView: BaseView {
         }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        drawDashedBorder()
-    }
-    
     // MARK: - Methods
     
     func getPlusButton() -> UIButton {
@@ -47,15 +56,11 @@ class PlusButtonView: BaseView {
     }
     
     private func drawDashedBorder() {
-        let borderLayer = CAShapeLayer()
-        borderLayer.strokeColor = UIColor(hex: "#000000").cgColor
-        borderLayer.lineDashPattern = [6, 3]
-        borderLayer.frame = plusButton.bounds
-        borderLayer.fillColor = nil
-        borderLayer.path = UIBezierPath(roundedRect: plusButton.bounds, cornerRadius: 8).cgPath
-        borderLayer.lineWidth = 2
-
-        plusButton.layer.sublayers?.removeAll(where: { $0 is CAShapeLayer })
-        plusButton.layer.addSublayer(borderLayer)
+        dashedBorderLayer.frame = plusButton.bounds
+        dashedBorderLayer.path = UIBezierPath(roundedRect: plusButton.bounds, cornerRadius: 8).cgPath
+        
+        if dashedBorderLayer.superlayer == nil {
+            plusButton.layer.addSublayer(dashedBorderLayer)
+        }
     }
 }
