@@ -28,7 +28,7 @@ final class TeamSpartaiOSViewController: BaseViewController {
     private var drawupDataList: [DrawupData] = []
     
     override func bindViewModel() {
-        plusButton.didTapPlusButton().rx.tap
+        plusButton.getPlusButton().rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.inputs.didTapPlustButton()
             })

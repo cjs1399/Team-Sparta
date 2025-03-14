@@ -42,7 +42,7 @@ class PlusButtonView: BaseView {
     
     // MARK: - Methods
     
-    func didTapPlusButton() -> UIButton {
+    func getPlusButton() -> UIButton {
         return plusButton
     }
     
