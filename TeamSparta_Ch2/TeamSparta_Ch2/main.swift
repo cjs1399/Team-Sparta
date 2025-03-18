@@ -9,3 +9,4 @@ import Foundation
 
 
 print(result)
+calculate(total: sum)

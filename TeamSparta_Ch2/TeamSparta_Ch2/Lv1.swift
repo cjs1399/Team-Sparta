@@ -21,4 +21,7 @@ let sum: (Int, Int) -> String = { a, b in
 var num: Int = 3
 let result = sum(num, 3)
 
-
+func calculate(total: (Int, Int) -> String) {
+    let output = total(7, 2)
+    print(output)
+}
