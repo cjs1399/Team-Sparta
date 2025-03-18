@@ -9,5 +9,8 @@ import Foundation
 
 let ch2_2 = Lv2()
 
-ch2_2.ch2_2()
+let result = ch2_2.myMap([1, 2, 3, 4, 5]) {
+    String($0)
+}
 
+print(result) // ["1", "2", "3", "4", "5"]

@@ -20,7 +20,7 @@ final class Lv2 {
         //}
         
         let numbers = [1, 2, 3, 4, 5]
-        var result: [String] = numbers.map { String($0) }
+        let result: [String] = numbers.map { String($0) }
         print(result)
     }
     
@@ -36,6 +36,14 @@ final class Lv2 {
 
         print("입력: \(input) - 타입 \(type(of: input))")
         print("출력: \(output) - 타입 \(type(of: output))")
+    }
+    
+    func myMap(_ array: [Int], transType: (Int) -> String) -> [String] {
+        var result: [String] = []
+        for i in array {
+            result.append(transType(i))
+        }
+        return result
     }
 }
 
