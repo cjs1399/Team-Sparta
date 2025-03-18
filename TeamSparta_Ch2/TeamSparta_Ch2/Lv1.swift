@@ -19,7 +19,7 @@ let sum: (Int, Int) -> String = { a, b in
     return "두 수의 합은 \(a + b)입니다"
 }
 var num: Int = 3
-let result = sum(num, 3)
+//let result = sum(num, 3)
 
 func calculate(total: (Int, Int) -> String) {
     let output = total(7, 2)
