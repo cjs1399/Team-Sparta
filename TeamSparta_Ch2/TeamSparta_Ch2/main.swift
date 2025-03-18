@@ -7,6 +7,7 @@
 
 import Foundation
 
+let ch2_2 = Lv2()
 
-print(result)
-calculate(total: sum)
+ch2_2.ch2_2()
+
