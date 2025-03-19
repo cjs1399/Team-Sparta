@@ -10,7 +10,6 @@ import Foundation
 let ch2 = Lv2()
 let ch3 = Lv3()
 
-let input = [1, 2, 3, 4, 5]
+let input = ["가", "나", "다", "라", "마"]
 
-print(ch3.a(input)) // prints [1, 3, 5]
-
+print(ch3.b(input)) // prints ["가", "다", "마"]
