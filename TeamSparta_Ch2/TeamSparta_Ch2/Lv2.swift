@@ -31,8 +31,8 @@ final class Lv2 {
 
         let input = readLine()!.split(separator: " ").map { Int($0)! }
         let output = input
-            .filter { $0 % 2 == 0 }
-            .map { String($0) }
+            .filter { $0 % 2 == 0 } // 짝수만 필터링
+            .map { String($0) } // 각 값을 문자열로 변환
 
         print("입력: \(input) - 타입 \(type(of: input))")
         print("출력: \(output) - 타입 \(type(of: output))")
