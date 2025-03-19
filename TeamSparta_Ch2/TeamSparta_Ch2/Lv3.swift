@@ -25,4 +25,10 @@ final class Lv3 {
             index.isMultiple(of: 2) ? value : nil
         }
     }
+    
+    func d<T: Numeric>(_ array: [T]) -> [T] {
+        return array.enumerated().compactMap { index, value in
+            index.isMultiple(of: 2) ? value : nil
+        }
+    }
 }

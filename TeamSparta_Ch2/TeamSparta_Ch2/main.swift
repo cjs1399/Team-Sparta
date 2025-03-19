@@ -13,4 +13,4 @@ let ch3 = Lv3()
 let inputInt = [1, 2, 3, 4, 5]
 let inputString = ["가", "나", "다", "라", "마"]
 
-print(ch3.c(inputInt), ch3.c(inputString))
+print(ch3.d(inputInt)) // prints [1, 3, 5]
