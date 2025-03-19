@@ -7,10 +7,10 @@
 
 import Foundation
 
-let ch2_2 = Lv2()
+let ch2 = Lv2()
+let ch3 = Lv3()
 
-let result = ch2_2.myMap([1, 2, 3, 4, 5]) {
-    String($0)
-}
+let input = [1, 2, 3, 4, 5]
 
-print(result) // ["1", "2", "3", "4", "5"]
+print(ch3.a(input)) // prints [1, 3, 5]
+
