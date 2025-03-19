@@ -19,5 +19,11 @@ final class Lv3 {
             index.isMultiple(of: 2) ? value : nil
         }
     }
+    
+    func c<T>(_ stringArray: [T]) -> [T] {
+        return stringArray.enumerated().compactMap { index, value in
+            index.isMultiple(of: 2) ? value : nil
+        }
+    }
 
 }
