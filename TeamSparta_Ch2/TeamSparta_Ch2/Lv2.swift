@@ -39,11 +39,7 @@ final class Lv2 {
     }
     
     func myMap(_ array: [Int], transType: (Int) -> String) -> [String] {
-        var result: [String] = []
-        for i in array {
-            result.append(transType(i))
-        }
-        return result
+        array.map{ transType($0) }
     }
 }
 
