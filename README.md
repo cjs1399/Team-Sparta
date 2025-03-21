@@ -45,7 +45,7 @@ RxSwift | 비동기적 데이터 흐름 작업 | SPM
 
 필수 구현: Issues: [필수 구현1](https://github.com/cjs1399/Team-Sparta/issues/7), [필수 구현2](https://github.com/cjs1399/Team-Sparta/issues/8), [필수 구현3](https://github.com/cjs1399/Team-Sparta/issues/9)
 
-도전 구현: Issues: 
+TIL & 트러블슈팅: Issues: [Ch.2 심화 주차 과제, 필수 문제 TIL 및 트러블 슈팅](https://github.com/cjs1399/Team-Sparta/issues/10) 
 
 ### 필수 구현
 두 개의 Int 값을 파라미터로 받고, 하나의 String 값을 반환하는 클로저를 설계해주세요.
@@ -82,25 +82,3 @@ String 배열의 짝수번째 요소를 제거해서 반환하는 함수 `b` 를
 함수 `c` 를 기반으로 수정하여 함수 `d` 를 작성해주세요.
     - 파라미터의 타입을 << 'Numeric 프로토콜'을 준수하는 타입의 요소를 가진 배열 >> 로 변경합니다.
 
-
-### 도전 기능
-- ‘자동차’ 라는 개념을 가지고 객체 지향 설계를 해봅니다.
-    - Base Class `Car` 를 설계해주세요.
-        - 4가지의 상태를 정의해주세요.
-            - 브랜드, 모델, 연식
-                - 모두 String 타입입니다.
-            - 엔진
-                - Engine 이라는 커스텀 타입으로 정의해주세요.
-        - 1개의 동작을 정의해주세요.
-            - 운전하기
-                - 동작 예시) “Car 주행 중…”  출력
-        - 추가하고 싶은 상태와 동작은 마음껏 추가해주세요.
-            - stop(), charge(), refuel() 등..
-    -  `Car` 를 상속한 `ElectricCar` 를 설계해주세요.
-        - ElectricEngine 타입의 Engine 을 사용해야합니다.
-    - `Car` 를 상속한 `HybridCar` 를 설계해주세요.
-        - 새로운 엔진 타입 `HydrogenEngine` 을 정의해주세요.
-        - HybridCar 에는 기존 Car 에 없던 새로운 동작이 추가됩니다.
-            - 엔진을 런타임에 바꿀 수 있는 `switchEngine(to:)` 입니다.
-    - `HybridCar` 인스턴스를 생성하고, `switchEngine(to:)` 를 호출하여 서로 다른 타입의 엔진으로 교체하는 코드를 작성해주세요.
-    - 상속을 사용하여 기능을 추가하는 것과, 프로토콜 채택을 통해서 기능을 추가하는 것의 장단점, 차이를 고민하고 주석으로 서술해주세요.
