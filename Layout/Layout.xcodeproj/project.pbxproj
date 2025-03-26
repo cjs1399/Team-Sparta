@@ -10,6 +10,7 @@
 		2542BA492D82BC4700F25454 /* PinLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 2542BA482D82BC4700F25454 /* PinLayout */; };
 		2542BA4C2D82BD5A00F25454 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2542BA4B2D82BD5A00F25454 /* Then */; };
 		2542BA922D82C38600F25454 /* FlexLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 2542BA912D82C38600F25454 /* FlexLayout */; };
+		25459D932D92812800B81004 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 25459D922D92812800B81004 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2542BA922D82C38600F25454 /* FlexLayout in Frameworks */,
+				25459D932D92812800B81004 /* SnapKit in Frameworks */,
 				2542BA492D82BC4700F25454 /* PinLayout in Frameworks */,
 				2542BA4C2D82BD5A00F25454 /* Then in Frameworks */,
 			);
@@ -90,6 +92,7 @@
 				2542BA482D82BC4700F25454 /* PinLayout */,
 				2542BA4B2D82BD5A00F25454 /* Then */,
 				2542BA912D82C38600F25454 /* FlexLayout */,
+				25459D922D92812800B81004 /* SnapKit */,
 			);
 			productName = Layout;
 			productReference = 2542BA2F2D82BBB800F25454 /* Layout.app */;
@@ -123,6 +126,7 @@
 				2542BA472D82BC4700F25454 /* XCRemoteSwiftPackageReference "PinLayout" */,
 				2542BA4A2D82BD5A00F25454 /* XCRemoteSwiftPackageReference "Then" */,
 				2542BA902D82C38600F25454 /* XCRemoteSwiftPackageReference "FlexLayout" */,
+				25459D912D92812800B81004 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2542BA302D82BBB800F25454 /* Products */;
@@ -376,6 +380,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		25459D912D92812800B81004 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -393,6 +405,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2542BA902D82C38600F25454 /* XCRemoteSwiftPackageReference "FlexLayout" */;
 			productName = FlexLayout;
+		};
+		25459D922D92812800B81004 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25459D912D92812800B81004 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
