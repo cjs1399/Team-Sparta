@@ -3,6 +3,9 @@
 ## Ch.1 Onboarding
 [다짐 기록 앱 만들기](https://github.com/cjs1399/Team-Sparta/tree/main/Sparta)
 
+과제 피드백 반영 Issues: [Ch.1 과제 코드리뷰 반영 기록](https://github.com/cjs1399/Team-Sparta/issues/15) 
+
+
 ### 필수 기능
 배경 이미지를 변경합니다.
 앨범 이미지, 제목, 내용을 원하는 형태로 변경합니다.
@@ -25,6 +28,8 @@ RxSwift | 비동기적 데이터 흐름 작업 | SPM
 필수 기능: Issues: [Lv1](https://github.com/cjs1399/Team-Sparta/issues/1), [Lv2](https://github.com/cjs1399/Team-Sparta/issues/2)
 
 도전 기능: Issues: [Lv3](https://github.com/cjs1399/Team-Sparta/issues/3), [Lv4](https://github.com/cjs1399/Team-Sparta/issues/4), [Lv5](https://github.com/cjs1399/Team-Sparta/issues/5), [Lv6](https://github.com/cjs1399/Team-Sparta/issues/6)
+
+과제 피드백 반영 Issues: [피드백 반영](https://github.com/cjs1399/Team-Sparta/issues/14)
 
 ### 필수 기능
 1에서 9까지의 서로 다른 임의의 수 3개를 정하고 맞추는 게임입니다.
