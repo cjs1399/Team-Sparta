@@ -14,9 +14,48 @@ enum selectOptionType: String {
     case end = "3"
 }
 
+// BallCount 구조체 추가
+struct BallCount {
+    let strikes: Int
+    let balls: Int
+    
+    var isThreeStrikes: Bool {
+        return strikes == 3
+    }
+}
+
+// RandomNumberGenerator 클래스 분리
+final class RandomNumberGenerator {
+    func generate() -> [Int] {
+        let firstRandomNumber = Array(1...9).shuffled().first!
+        let randomNumber = Array(0...9).filter { $0 != firstRandomNumber }.shuffled().prefix(2)
+        return [firstRandomNumber] + randomNumber
+    }
+}
+
+// BallCountChecker 클래스 분리
+final class BallCountChecker {
+    func check(_ input: [Int], _ target: [Int]) -> BallCount {
+        var strikes = 0
+        var balls = 0
+        
+        for i in 0..<input.count {
+            if input[i] == target[i] {
+                strikes += 1
+            } else if target.contains(input[i]) {
+                balls += 1
+            }
+        }
+        
+        return BallCount(strikes: strikes, balls: balls)
+    }
+}
+
+// BaseballGame 클래스에서 로직 분리 적용
 final class BaseballGame {
-    private var randomNumbers: [Int] = []
-    private var inputNumbers: [Int] = []
+    private let randomNumberGenerator = RandomNumberGenerator()
+    private let ballCountChecker = BallCountChecker()
+    
     private var gameHistory: [Int: Int] = [:]
     private var gameCount: Int = 0
     private var tryCount: Int = 0
@@ -41,89 +80,29 @@ final class BaseballGame {
             }
         }
     }
-}
-
-
-extension BaseballGame {
     
     private func playGame() {
-        randomNumbers = makeRandomNumbers()
-        var playGame: Bool = true
+        let randomNumbers = randomNumberGenerator.generate()
+        var isPlaying = true
         print("<게임을 시작합니다>\n숫자를 입력하세요")
-        while playGame {
-            // guard let을 통해 사용자의 입력 값을 검증
+        
+        while isPlaying {
             guard let input = readLine(), checkValue(input) else { continue }
-            inputNumbers = input.map { Int(String($0))! }
+            let inputNumbers = input.map { Int(String($0))! }
             tryCount += 1
-            let result = checkBallCount(inputNumbers, randomNumbers)
-            if result[0] == 3 {
+            
+            let result = ballCountChecker.check(inputNumbers, randomNumbers)
+            
+            if result.isThreeStrikes {
                 print("정답입니다!")
-                playGame = false
+                isPlaying = false
                 gameHistory[gameCount] = tryCount
                 gameCount += 1
             } else {
-                switch (result[0], result[1]) {
-                case (0, 0):
-                    print("Nothing")
-                case (0, _):
-                    print("\(result[1])볼")
-                case (_, 0):
-                    print("\(result[0])스트라이크")
-                default:
-                    print("\(result[0])스트라이크 \(result[1])볼")
-                }
+                print("\(result.strikes)스트라이크 \(result.balls)볼")
             }
         }
         tryCount = 0
-    }
-
-    
-    private func makeRandomNumbers() -> [Int] {
-        // baseballGameLV3
-        // 조건1: 0에서 9까지의 서로 다른 임의의 수 3개를 정한다.
-        // 조건2: 맨 앞자리에 0이 오는 것은 불가능합니다.
-        let firstRandomNumber = Array(1...9).shuffled().first!
-        let randomNumber = Array(0...9).filter { $0 != firstRandomNumber }.shuffled().prefix(2)
-        return [firstRandomNumber] + randomNumber
-    
-        // 조건 1을 충족하기 위해 첫 번째 숫자는 1에서 9까지의 임의의 숫자 1개를 생성합니다.
-        // filter를 사용해 0에서 9까지의 숫자 중 firstRandomNumber와 같은 수를 제거합니다
-        // shuffled 남은 숫자를 랜덤하게 섞고 앞의 2개의 숫자를 선택한다
-    }
-    
-    // 사용자의 입력한 숫자가 올바른지 검증하는 함수입니다.
-    // 조건1: 3자리 숫자
-    // 조건2: 중복된 숫자가 없어야 함
-    private func checkValue(_ input: String) -> Bool {
-        guard !input.contains(" ") else {
-            print("현재 입력값은 공백이 포함되어 있습니다.")
-            return false
-        }
-        
-        guard input.allSatisfy({ $0.isNumber }) else {
-            print("현재 입력값은 3자리 숫자가 아닙니다.")
-            return false
-        }
-        guard input.count == 3 else {
-            print("현재 입력값은 3자리 값이 아닙니다.")
-            return false
-        }
-        guard Set(input).count == 3 else {
-            print("현재 입력 값은 중복 값이 있습니다.")
-            return false
-        }
-        return true
-    }
-    
-    // 사용자의 입력과 랜덤 숫자를 비교하여 스트라이크 / 볼 개수를 반환하는 함수입니다.
-    private func checkBallCount(_ input: [Int], _ randomNumbers: [Int]) -> [Int] {
-        var strikes: Int = 0
-        var balls: Int = 0
-        for i in 0..<input.count {
-            if input[i] == randomNumbers[i] { strikes += 1 }
-            else if randomNumbers.contains(input[i]) { balls += 1 }
-        }
-        return [strikes, balls]
     }
     
     private func printHistory() {
@@ -135,5 +114,15 @@ extension BaseballGame {
                 print("\(game)번째 게임: 시도 횟수 - \(attempts)")
             }
         }
+    }
+    
+    private func checkValue(_ input: String) -> Bool {
+        let numbers = input.compactMap { Int(String($0)) }
+        
+        if numbers.count != 3 || Set(numbers).count != 3 {
+            print("⚠️ 서로 다른 3자리 숫자를 입력해주세요!")
+            return false
+        }
+        return true
     }
 }
