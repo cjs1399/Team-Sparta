@@ -15,4 +15,16 @@ enum ImageLiterals {
     static var harrypotter_poster_five: UIImage { .load(name: "harrypotter5").withRenderingMode(.alwaysOriginal)}
     static var harrypotter_poster_six: UIImage { .load(name: "harrypotter6").withRenderingMode(.alwaysOriginal)}
     static var harrypotter_poster_seven: UIImage { .load(name: "harrypotter7").withRenderingMode(.alwaysOriginal)}
+    
+    static var allPosters: [UIImage] {
+        return [
+            harrypotter_poster_one,
+            harrypotter_poster_two,
+            harrypotter_poster_three,
+            harrypotter_poster_four,
+            harrypotter_poster_five,
+            harrypotter_poster_six,
+            harrypotter_poster_seven
+        ]
+    }
 }

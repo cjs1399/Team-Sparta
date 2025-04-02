@@ -20,10 +20,9 @@ class TitleLabelView: BaseView {
     override func setStyles() {
         titleLabel.do {
             $0.textColor = UIColor(hex: "#000000")
-            $0.font = UIFont.boldSystemFont(ofSize: 24)
+            $0.font = .boldSystemFont(ofSize: 24)
             $0.textAlignment = .center
             $0.numberOfLines = 2
-//            $0.text = "Harry Potter and the Philosopher's Stone"
         }
     }
     
