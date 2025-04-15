@@ -301,3 +301,25 @@ TIL & 트러블슈팅: Issues: [Ch.3 앱 개발 입문 주차 과제, TIL 및 �
 </aside>
 </div>
 </details>
+
+
+
+## 앱 개발 입문 주차
+간단한 사용으로 Apple 기기를 구매할 수 있는 서비스, 과수원 🍎
+
+[ReadMe](https://github.com/nbcampMasterChapter3Team4/TeamProject/edit/main/README.md)
+
+## 💻 Development Environment
+
+<img src ="https://img.shields.io/badge/Xcode-16.2-blue?logo=xcode" height="30"> <img src ="https://img.shields.io/badge/iOS-16.0-white.svg" height="30">
+
+<br>
+
+## 📖 Using Library
+
+라이브러리 | 사용 목적 | Management Tool
+:---------:|:----------:|:---------:
+SnapKit | UI Layout | SPM
+Then | UI 선언 | SPM
+
+<br>
