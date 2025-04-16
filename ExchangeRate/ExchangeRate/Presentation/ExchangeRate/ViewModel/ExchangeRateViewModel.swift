@@ -17,7 +17,7 @@ protocol ExchangeRateViewModelInput {
 }
 
 protocol ExchangeRateViewModelOutput {
-    var filteredItems: Driver<[ExchangeRateItem]> { get }
+    var filteredItems: Driver<[ExchangeRateItemDisplay]> { get } 
     var isLoading: Driver<Bool> { get }
     var errorMessage: Driver<String?> { get }
 }
@@ -44,13 +44,22 @@ final class ExchangeRateViewModel: ExchangeRateViewModelInput, ExchangeRateViewM
     private let errorMessageRelay = BehaviorRelay<String?>(value: nil)
 
     // MARK: - Outputs
-    lazy var filteredItems: Driver<[ExchangeRateItem]> = {
+    
+    lazy var filteredItems: Driver<[ExchangeRateItemDisplay]> = {
         Observable.combineLatest(searchText, itemsRelay)
             .map { query, items in
-                guard !query.isEmpty else { return items }
-                return items.filter {
+                let filtered = items.filter {
+                    query.isEmpty ||
                     $0.currencyCode.lowercased().contains(query.lowercased()) ||
                     CurrencyCountryMapper.shared.countryName(for: $0.currencyCode).contains(query)
+                }
+
+                return filtered.map {
+                    ExchangeRateItemDisplay(
+                        code: $0.currencyCode,
+                        country: CurrencyCountryMapper.shared.countryName(for: $0.currencyCode),
+                        rate: $0.rate
+                    )
                 }
             }
             .asDriver(onErrorJustReturn: [])

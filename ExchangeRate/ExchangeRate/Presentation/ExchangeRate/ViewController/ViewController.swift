@@ -19,7 +19,7 @@ class ViewController: BaseViewController {
     
     private let searchBar = UISearchBar()
     private let tableView = UITableView()
-    
+    private let emptyLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,16 +31,19 @@ class ViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         viewModel.outputs.filteredItems
+            .drive(onNext: { [weak self] items in
+                self?.emptyLabel.isHidden = !items.isEmpty
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.filteredItems
             .drive(tableView.rx.items(
                 cellIdentifier: "ExchangeRateTableViewCell",
                 cellType: ExchangeRateTableViewCell.self
             )) { _, item, cell in
-                let country = CurrencyCountryMapper.shared.countryName(for: item.currencyCode)
-                cell.configure(title: item.currencyCode, subTitle: country, price: item.rate)
+                cell.configure(displayItem: item)
             }
             .disposed(by: disposeBag)
-        
-        viewModel.inputs.fetchRates()
     }
     
     override func setStyles() {
@@ -55,10 +58,18 @@ class ViewController: BaseViewController {
             $0.separatorStyle = .none
             $0.rowHeight = 60
         }
+        
+        emptyLabel.do {
+            $0.text = "검색 결과 없음"
+            $0.textAlignment = .center
+            $0.textColor = .gray
+            $0.font = .systemFont(ofSize: 16, weight: .medium)
+            $0.isHidden = true
+        }
     }
     
     override func setLayout() {
-        view.addSubviews(searchBar, tableView)
+        view.addSubviews(searchBar, tableView, emptyLabel)
 
         searchBar.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -68,6 +79,10 @@ class ViewController: BaseViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom)
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+
+        emptyLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
 

@@ -50,9 +50,12 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
         }
     }
     
-    func configure(title: String, subTitle: String, price: Double) {
-        titleLabel.text = title
-        subTitleLabel.text = subTitle
-        priceLabel.text = String(format: "%.4f", price)
+    func configure(displayItem: ExchangeRateItemDisplay) {
+        titleLabel.text = displayItem.code
+        subTitleLabel.text = displayItem.country
+        priceLabel.text = String(format: "%.4f", displayItem.rate)
+
+        subTitleLabel.isHidden = false
+        priceLabel.isHidden = false
     }
 }
