@@ -12,11 +12,12 @@ import RxSwift
 import CoreData
 
 protocol ExchangeRateViewModelInput {
+    var searchText: BehaviorRelay<String> { get }
     func fetchRates()
 }
 
 protocol ExchangeRateViewModelOutput {
-    var items: Driver<[ExchangeRateItem]> { get }
+    var filteredItems: Driver<[ExchangeRateItem]> { get }
     var isLoading: Driver<Bool> { get }
     var errorMessage: Driver<String?> { get }
 }
@@ -27,7 +28,7 @@ protocol ExchangeRateViewModelType {
 }
 
 final class ExchangeRateViewModel: ExchangeRateViewModelInput, ExchangeRateViewModelOutput, ExchangeRateViewModelType {
-    
+
     // MARK: - Input / Output
     var inputs: ExchangeRateViewModelInput { return self }
     var outputs: ExchangeRateViewModelOutput { return self }
@@ -36,16 +37,24 @@ final class ExchangeRateViewModel: ExchangeRateViewModelInput, ExchangeRateViewM
     private let exchangeRateService = ExchangeRateService()
     private let disposeBag = DisposeBag()
 
-    // MARK: - Output Relays
+    // MARK: - Relays
+    let searchText = BehaviorRelay<String>(value: "")
     private let itemsRelay = BehaviorRelay<[ExchangeRateItem]>(value: [])
     private let isLoadingRelay = BehaviorRelay<Bool>(value: false)
     private let errorMessageRelay = BehaviorRelay<String?>(value: nil)
 
-    // MARK: - Output Drivers
-
-    var items: Driver<[ExchangeRateItem]> {
-        return itemsRelay.asDriver()
-    }
+    // MARK: - Outputs
+    lazy var filteredItems: Driver<[ExchangeRateItem]> = {
+        Observable.combineLatest(searchText, itemsRelay)
+            .map { query, items in
+                guard !query.isEmpty else { return items }
+                return items.filter {
+                    $0.currencyCode.lowercased().contains(query.lowercased()) ||
+                    CurrencyCountryMapper.shared.countryName(for: $0.currencyCode).contains(query)
+                }
+            }
+            .asDriver(onErrorJustReturn: [])
+    }()
 
     var isLoading: Driver<Bool> {
         return isLoadingRelay.asDriver(onErrorJustReturn: false)
