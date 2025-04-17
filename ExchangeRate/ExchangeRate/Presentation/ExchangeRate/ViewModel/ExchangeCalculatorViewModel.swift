@@ -18,7 +18,7 @@ enum ExchangeCalculatorAction {
 struct ExchangeCalculatorState {
     var code = BehaviorRelay<String>(value: "")
     var country = BehaviorRelay<String>(value: "")
-    var result = BehaviorRelay<String>(value: "")
+    var result = BehaviorRelay<String>(value: "계산 결과가 여기에 표시됩니다")
 }
 
 final class ExchangeCalculatorViewModel: ViewModelProtocol {

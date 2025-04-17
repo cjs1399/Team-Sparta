@@ -50,7 +50,7 @@ final class ExchangeCalculatorView: BaseView {
             $0.borderStyle = .roundedRect
             $0.keyboardType = .decimalPad
             $0.textAlignment = .center
-            $0.placeholder = "금액을 입력하세요"
+            $0.placeholder = "달러(USD)를 입력하세요"
         }
         
         convertButton.do {
@@ -62,7 +62,6 @@ final class ExchangeCalculatorView: BaseView {
         }
         
         resultLabel.do {
-            $0.text = "계산 결과가 여기에 표시됩니다"
             $0.textColor = .black
             $0.font = .systemFont(ofSize: 20, weight: .medium)
             $0.textAlignment = .center
@@ -98,9 +97,4 @@ final class ExchangeCalculatorView: BaseView {
             $0.leading.trailing.equalToSuperview().inset(24)
         }
     }
-    
-    
-    
-    // MARK: - Methods
-
 }
