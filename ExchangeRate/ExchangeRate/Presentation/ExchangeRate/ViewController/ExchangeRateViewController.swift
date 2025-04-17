@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ExchangeRateViewController.swift
 //  ExchangeRate
 //
 //  Created by 천성우 on 4/16/25.
@@ -12,15 +12,19 @@ import RxSwift
 import SnapKit
 import Then
 
-class ViewController: BaseViewController {
+class ExchangeRateViewController: BaseViewController {
     
     private let viewModel = AppDependencyFactory.makeExchangeRateViewModel()
     private let disposeBag = DisposeBag()
-    
+
+    // MARK: - UI Components
+
     private let searchBar = UISearchBar()
     private let tableView = UITableView()
     private let emptyLabel = UILabel()
     
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -49,8 +53,15 @@ class ViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .bind(to: emptyLabel.rx.isHidden)
             .disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(ExchangeRateItemDisplay.self)
+            .subscribe(onNext: { item in
+                print("선택한 셀: 통화코드 - \(item.code), 국가 - \(item.country), 환율 - \(item.rate)")
+            })
+            .disposed(by: disposeBag)
     }
 
+    // MARK: - Set UIComponents
     
     override func setStyles() {
         view.backgroundColor = .white
@@ -73,6 +84,9 @@ class ViewController: BaseViewController {
             $0.isHidden = true
         }
     }
+    
+    // MARK: - Layout Helper
+
     
     override func setLayout() {
         view.addSubviews(searchBar, tableView, emptyLabel)
