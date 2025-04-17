@@ -14,7 +14,7 @@ import Then
 
 class ViewController: BaseViewController {
     
-    private let viewModel = ExchangeRateViewModel()
+    private let viewModel = AppDependencyFactory.makeExchangeRateViewModel()
     private let disposeBag = DisposeBag()
     
     private let searchBar = UISearchBar()
@@ -26,25 +26,31 @@ class ViewController: BaseViewController {
     }
         
     override func bindViewModel() {
+        viewModel.action?(.fetch)
+
         searchBar.rx.text.orEmpty
-            .bind(to: viewModel.inputs.searchText)
-            .disposed(by: disposeBag)
-        
-        viewModel.outputs.filteredItems
-            .drive(onNext: { [weak self] items in
-                self?.emptyLabel.isHidden = !items.isEmpty
+            .skip(1)
+            .bind(onNext: { [weak viewModel] query in
+                viewModel?.action?(.search(query))
             })
             .disposed(by: disposeBag)
 
-        viewModel.outputs.filteredItems
-            .drive(tableView.rx.items(
+        viewModel.state.filteredItems
+            .bind(to: tableView.rx.items(
                 cellIdentifier: "ExchangeRateTableViewCell",
                 cellType: ExchangeRateTableViewCell.self
             )) { _, item, cell in
                 cell.configure(displayItem: item)
             }
             .disposed(by: disposeBag)
+
+        viewModel.state.filteredItems
+            .map { !$0.isEmpty }
+            .observe(on: MainScheduler.instance)
+            .bind(to: emptyLabel.rx.isHidden)
+            .disposed(by: disposeBag)
     }
+
     
     override func setStyles() {
         view.backgroundColor = .white

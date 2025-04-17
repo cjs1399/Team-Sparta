@@ -9,89 +9,91 @@ import UIKit
 
 import RxCocoa
 import RxSwift
-import CoreData
 
-protocol ExchangeRateViewModelInput {
-    var searchText: BehaviorRelay<String> { get }
-    func fetchRates()
+enum ExchangeRateViewAction {
+    case fetch
+    case search(String)
 }
 
-protocol ExchangeRateViewModelOutput {
-    var filteredItems: Driver<[ExchangeRateItemDisplay]> { get } 
-    var isLoading: Driver<Bool> { get }
-    var errorMessage: Driver<String?> { get }
+struct ExchangeRateViewState {
+    var isLoading = BehaviorRelay<Bool>(value: false)
+    var errorMessage = BehaviorRelay<String?>(value: nil)
+    var filteredItems = BehaviorRelay<[ExchangeRateItemDisplay]>(value: [])
 }
 
-protocol ExchangeRateViewModelType {
-    var inputs: ExchangeRateViewModelInput { get }
-    var outputs: ExchangeRateViewModelOutput { get }
-}
+final class ExchangeRateViewModel: ViewModelProtocol {
 
-final class ExchangeRateViewModel: ExchangeRateViewModelInput, ExchangeRateViewModelOutput, ExchangeRateViewModelType {
-
-    // MARK: - Input / Output
-    var inputs: ExchangeRateViewModelInput { return self }
-    var outputs: ExchangeRateViewModelOutput { return self }
+    // MARK: - Protocol conformance
+    var action: ((ExchangeRateViewAction) -> Void)?
+    let state = ExchangeRateViewState()
 
     // MARK: - Dependencies
-    private let exchangeRateService = ExchangeRateService()
     private let disposeBag = DisposeBag()
-
-    // MARK: - Relays
-    let searchText = BehaviorRelay<String>(value: "")
-    private let itemsRelay = BehaviorRelay<[ExchangeRateItem]>(value: [])
-    private let isLoadingRelay = BehaviorRelay<Bool>(value: false)
-    private let errorMessageRelay = BehaviorRelay<String?>(value: nil)
-
-    // MARK: - Outputs
-    
-    lazy var filteredItems: Driver<[ExchangeRateItemDisplay]> = {
-        Observable.combineLatest(searchText, itemsRelay)
-            .map { query, items in
-                let filtered = items.filter {
-                    query.isEmpty ||
-                    $0.currencyCode.lowercased().contains(query.lowercased()) ||
-                    CurrencyCountryMapper.shared.countryName(for: $0.currencyCode).contains(query)
-                }
-
-                return filtered.map {
-                    ExchangeRateItemDisplay(
-                        code: $0.currencyCode,
-                        country: CurrencyCountryMapper.shared.countryName(for: $0.currencyCode),
-                        rate: $0.rate
-                    )
-                }
-            }
-            .asDriver(onErrorJustReturn: [])
-    }()
-
-    var isLoading: Driver<Bool> {
-        return isLoadingRelay.asDriver(onErrorJustReturn: false)
-    }
-
-    var errorMessage: Driver<String?> {
-        return errorMessageRelay.asDriver(onErrorJustReturn: "Unknown Error")
-    }
+    private let fetchUseCase: FetchExchangeRateUseCase
+    private var allItems = [ExchangeRateItem]()
 
     // MARK: - Init
-    init() {
-        fetchRates()
+    init(fetchUseCase: FetchExchangeRateUseCase) {
+        self.fetchUseCase = fetchUseCase
+        bindActions()
     }
 
-    // MARK: - Input Method
-    func fetchRates() {
-        isLoadingRelay.accept(true)
-        exchangeRateService.fetchExchangeRates()
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] response in
-                let mapped = response.rates.map { ExchangeRateItem(currencyCode: $0.key, rate: $0.value) }
-                    .sorted { $0.currencyCode < $1.currencyCode }
-                self?.itemsRelay.accept(mapped)
-                self?.isLoadingRelay.accept(false)
-            } onFailure: { [weak self] error in
-                self?.errorMessageRelay.accept(error.localizedDescription)
-                self?.isLoadingRelay.accept(false)
+    // MARK: - Action Binding
+    private func bindActions() {
+        action = { [weak self] action in
+            guard let self else { return }
+            switch action {
+            case .fetch:
+                self.fetchRates()
+            case .search(let query):
+                self.filterItems(query: query)
             }
+        }
+    }
+
+    // MARK: - Fetch
+    private func fetchRates() {
+        state.isLoading.accept(true)
+
+        fetchUseCase.execute(base: "USD")
+            .map { response in
+                response.rates.map { ExchangeRateItem(currencyCode: $0.key, rate: $0.value) }
+                    .sorted { $0.currencyCode < $1.currencyCode }
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(
+                with: self,
+                onSuccess: { owner, items in
+                    owner.allItems = items
+                    owner.state.isLoading.accept(false)
+                    owner.filterItems(query: "")
+                },
+                onFailure: { owner, error in
+                    owner.state.errorMessage.accept(error.localizedDescription)
+                    owner.state.isLoading.accept(false)
+                }
+            )
             .disposed(by: disposeBag)
     }
+
+    // MARK: - Filter
+    private func filterItems(query: String) {
+        let filtered = allItems
+            .filter {
+                query.isEmpty ||
+                $0.currencyCode.lowercased().contains(query.lowercased()) ||
+                CurrencyCountryMapper.shared.countryName(for: $0.currencyCode).contains(query)
+            }
+            .map {
+                ExchangeRateItemDisplay(
+                    code: $0.currencyCode,
+                    country: CurrencyCountryMapper.shared.countryName(for: $0.currencyCode),
+                    rate: $0.rate
+                )
+            }
+
+        state.filteredItems.accept(filtered)
+    }
 }
+
+
