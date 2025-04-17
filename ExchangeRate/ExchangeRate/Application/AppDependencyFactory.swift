@@ -15,4 +15,8 @@ final class AppDependencyFactory {
         let useCase = FetchExchangeRateUseCaseImpl(repository: repository)
         return ExchangeRateViewModel(fetchUseCase: useCase)
     }
+
+    static func makeExchangeCalculatorViewModel(item: ExchangeRateItemDisplay) -> ExchangeCalculatorViewModel {
+        return ExchangeCalculatorViewModel(selectedItem: item)
+    }
 }
