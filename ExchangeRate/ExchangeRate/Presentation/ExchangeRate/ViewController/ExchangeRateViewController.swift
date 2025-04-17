@@ -53,13 +53,12 @@ class ExchangeRateViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         contentView.tableView.rx.modelSelected(ExchangeRateItemDisplay.self)
-             .subscribe(onNext: { [weak self] item in
-                 print("선택한 셀: \(item.code) - \(item.country)")
-                 let calculatorVC = ExchangeCalculatorViewController()
-                 self?.navigationController?.pushViewController(calculatorVC, animated: true)
-             })
-             .disposed(by: disposeBag)
+            .subscribe(onNext: { [weak self] item in
+                let viewModel = AppDependencyFactory.makeExchangeCalculatorViewModel(item: item)
+                let calculatorVC = ExchangeCalculatorViewController(viewModel: viewModel)
+                self?.navigationController?.pushViewController(calculatorVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
-    
 }
 
