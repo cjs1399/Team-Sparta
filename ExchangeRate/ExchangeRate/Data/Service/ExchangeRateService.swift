@@ -9,7 +9,6 @@ import Foundation
 import RxSwift
 
 final class ExchangeRateService {
-
     func fetchExchangeRates(baseCurrency: String = "USD") -> Single<ExchangeRateResponse> {
         return Single.create { single in
             let urlString = "https://open.er-api.com/v6/latest/\(baseCurrency)"

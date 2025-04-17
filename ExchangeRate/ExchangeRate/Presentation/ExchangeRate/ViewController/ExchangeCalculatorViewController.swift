@@ -38,7 +38,6 @@ class ExchangeCalculatorViewController: BaseViewController {
         view.backgroundColor = .white
 
     }
-
         
     override func bindViewModel() {
         contentView.convertButton.rx.tap

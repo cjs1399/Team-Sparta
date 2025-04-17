@@ -19,7 +19,6 @@ final class ExchangeRateView: BaseView {
     private(set) var searchBar = UISearchBar()
     private(set) var tableView = UITableView()
     private(set) var emptyLabel = UILabel()
-
     
     // MARK: - Set UIComponents
 
@@ -45,7 +44,6 @@ final class ExchangeRateView: BaseView {
         }
     }
     
-    
     // MARK: - Layout Helper
     
     override func setLayout() {
@@ -65,8 +63,4 @@ final class ExchangeRateView: BaseView {
             $0.center.equalToSuperview()
         }
     }
-    
-    
-    // MARK: - Methods
-
 }
