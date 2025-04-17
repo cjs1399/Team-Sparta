@@ -14,48 +14,56 @@ import Then
 
 class ExchangeRateTableViewCell: BaseTableViewCell {
     
-    private let titleLabel = UILabel()
-    private let subTitleLabel = UILabel()
-    private let priceLabel = UILabel()
+    private let labelStackView = UIStackView()
+    private let currencyLabel = UILabel()
+    private let countryLabel = UILabel()
+    private let rateLabel = UILabel()
     
     override func setStyles() {
-        titleLabel.do {
-            $0.textColor = .black
+        
+        labelStackView.do {
+            $0.axis = .vertical
+            $0.spacing = 4
         }
         
-        subTitleLabel.do {
+        currencyLabel.do {
+            $0.textColor = .black
+            $0.font = .systemFont(ofSize: 16)
+        }
+        
+        countryLabel.do {
             $0.textColor = .gray
-            $0.font = .systemFont(ofSize: 12, weight: .regular)
+            $0.font = .systemFont(ofSize: 14)
         }
         
-        priceLabel.do {
+        rateLabel.do {
             $0.textColor = .black
+            $0.textAlignment = .right
+            $0.font = .systemFont(ofSize: 16)
         }
     }
     override func setLayout() {
-        contentView.addSubviews(titleLabel, subTitleLabel, priceLabel)
+        contentView.addSubviews(labelStackView, rateLabel)
+        labelStackView.addArrangedSubviews(currencyLabel, countryLabel)
         
-        titleLabel.snp.makeConstraints {
-            $0.leading.top.equalToSuperview().offset(10)
-        }
-        
-        subTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(5)
-            $0.leading.equalToSuperview().offset(10)
-        }
-        
-        priceLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-10)
+        labelStackView.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(16)
             $0.centerY.equalToSuperview()
+        }
+        
+        rateLabel.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(120)
         }
     }
     
     func configure(displayItem: ExchangeRateItemDisplay) {
-        titleLabel.text = displayItem.code
-        subTitleLabel.text = displayItem.country
-        priceLabel.text = String(format: "%.4f", displayItem.rate)
+        currencyLabel.text = displayItem.code
+        countryLabel.text = displayItem.country
+        rateLabel.text = String(format: "%.4f", displayItem.rate)
 
-        subTitleLabel.isHidden = false
-        priceLabel.isHidden = false
+        countryLabel.isHidden = false
+        rateLabel.isHidden = false
     }
 }
