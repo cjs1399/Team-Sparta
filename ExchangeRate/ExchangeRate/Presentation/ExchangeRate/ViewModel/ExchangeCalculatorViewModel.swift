@@ -33,8 +33,7 @@ final class ExchangeCalculatorViewModel: ViewModelProtocol {
     init(selectedItem: ExchangeRateItemDisplay) {
         self.selectedItem = selectedItem
         bind()
-        state.code.accept(selectedItem.code)
-        state.country.accept(selectedItem.country)
+        self.action?(.setItem(selectedItem))
     }
 
     private func bind() {
@@ -43,8 +42,9 @@ final class ExchangeCalculatorViewModel: ViewModelProtocol {
             switch action {
             case .calculate(let input):
                 self.performCalculation(amount: input)
-            case .setItem:
-                break
+            case .setItem(let item):
+                self.state.code.accept(item.code)
+                self.state.country.accept(item.country)
             }
         }
     }
