@@ -23,11 +23,9 @@ struct ExchangeCalculatorState {
 
 final class ExchangeCalculatorViewModel: ViewModelProtocol {
 
-    typealias Action = ExchangeCalculatorAction
-    typealias State = ExchangeCalculatorState
 
-    var action: ((Action) -> Void)?
-    let state = State()
+    var action: ((ExchangeCalculatorAction) -> Void)?
+    let state = ExchangeCalculatorState()
 
     private let selectedItem: ExchangeRateItemDisplay
     private let disposeBag = DisposeBag()

@@ -71,7 +71,7 @@ final class ExchangeRateViewController: BaseViewController {
         // 셀 선택 → 계산기 화면으로 이동
         contentView.tableView.rx.modelSelected(ExchangeRateItemDisplay.self)
             .subscribe(onNext: { [weak self] item in
-                let calculatorViewModel = ExchangeCalculatorViewModel(selectedItem: item)
+                let calculatorViewModel = AppDependencyFactory.makeExchangeCalculatorViewModel(item: item)
                 let calculatorVC = ExchangeCalculatorViewController(viewModel: calculatorViewModel)
                 self?.navigationController?.pushViewController(calculatorVC, animated: true)
             })

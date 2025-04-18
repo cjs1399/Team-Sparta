@@ -16,8 +16,8 @@ enum ExchangeRateViewAction {
 }
 
 struct ExchangeRateViewState {
-    var isLoading = BehaviorRelay<Bool>(value: false)
-    var errorMessage = BehaviorRelay<String?>(value: nil)
+    var isLoading = BehaviorRelay<Bool>(value: false) // 로딩 상태 표시를 위해 선언 -> 예외처리 작업을 위해
+    var errorMessage = BehaviorRelay<String?>(value: nil) // 데이터 오류 표시를 위해 선언
     var filteredItems = BehaviorRelay<[ExchangeRateItemDisplay]>(value: [])
 }
 
