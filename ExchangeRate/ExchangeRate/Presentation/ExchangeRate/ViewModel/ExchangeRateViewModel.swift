@@ -10,22 +10,22 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-enum ExchangeRateViewAction {
-    case fetch
-    case search(String)
-}
-
-struct ExchangeRateViewState {
-    var isLoading = BehaviorRelay<Bool>(value: false) // 로딩 상태 표시를 위해 선언 -> 예외처리 작업을 위해
-    var errorMessage = BehaviorRelay<String?>(value: nil) // 데이터 오류 표시를 위해 선언
-    var filteredItems = BehaviorRelay<[ExchangeRateItemDisplay]>(value: [])
-}
-
 final class ExchangeRateViewModel: ViewModelProtocol {
+    
+    enum Action {
+        case fetch
+        case search(String)
+    }
+    
+    struct State {
+        var isLoading = BehaviorRelay<Bool>(value: false) // 로딩 상태 표시를 위해 선언 -> 예외처리 작업을 위해
+        var errorMessage = BehaviorRelay<String?>(value: nil) // 데이터 오류 표시를 위해 선언
+        var filteredItems = BehaviorRelay<[ExchangeRateItemDisplay]>(value: [])
+    }
 
     // MARK: - Protocol conformance
-    var action: ((ExchangeRateViewAction) -> Void)?
-    let state = ExchangeRateViewState()
+    var actionRelay = PublishRelay<Action>()
+    let state = State()
 
     // MARK: - Dependencies
     private let disposeBag = DisposeBag()
@@ -39,16 +39,19 @@ final class ExchangeRateViewModel: ViewModelProtocol {
     }
 
     // MARK: - Action Binding
+
     private func bindActions() {
-        action = { [weak self] action in
-            guard let self else { return }
-            switch action {
-            case .fetch:
-                self.fetchRates()
-            case .search(let query):
-                self.filterItems(query: query)
-            }
-        }
+        actionRelay
+            .subscribe(onNext: { [weak self] action in
+                guard let self else { return }
+                switch action {
+                case .fetch:
+                    self.fetchRates()
+                case .search(let query):
+                    self.filterItems(query: query)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Fetch
