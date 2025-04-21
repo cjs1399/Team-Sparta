@@ -44,7 +44,7 @@ class ExchangeCalculatorViewController: BaseViewController {
             .withLatestFrom(contentView.amountTextField.rx.text.orEmpty)
             .compactMap { Double($0) }
             .bind(onNext: { [weak viewModel] value in
-                viewModel?.action?(.calculate(value))
+                viewModel?.actionRelay.accept(.calculate(value))
             })
             .disposed(by: disposeBag)
 
@@ -68,7 +68,6 @@ class ExchangeCalculatorViewController: BaseViewController {
         title = "환율 계산기"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-
     }
     
     @objc private func didTapBackButton() {

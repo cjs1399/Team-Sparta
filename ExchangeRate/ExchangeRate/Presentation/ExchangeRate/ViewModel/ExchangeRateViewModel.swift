@@ -7,8 +7,8 @@
 
 import UIKit
 
-import RxCocoa
 import RxSwift
+import RxRelay
 
 final class ExchangeRateViewModel: ViewModelProtocol {
     
