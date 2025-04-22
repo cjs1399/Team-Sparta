@@ -16,7 +16,7 @@ final class CoreDataStack {
         let container = NSPersistentContainer(name: "ExchangeRateModel")
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {
-                fatalError("❌ CoreData 오류: \(error), \(error.userInfo)")
+                fatalError("CoreData 오류: \(error), \(error.userInfo)")
             }
         }
         return container

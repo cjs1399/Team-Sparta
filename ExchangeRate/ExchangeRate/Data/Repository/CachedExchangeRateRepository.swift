@@ -23,6 +23,7 @@ final class CachedExchangeRateRepository: CachedExchangeRateRepositoryInterface 
         return result?.map(CoreDataModelMapper.toEntity) ?? []
     }
 
+    /// 해당 코드는 하루가 아니라... 1분 단위로 구현이 되어있네요... 수정을 하겠습니다...
     func isNeedCompare(timeUnix: Int) throws -> Bool {
         let cached = try context.fetch(CachedExchangeRate.fetchRequest())
         guard let latest = cached.first else { return true }
