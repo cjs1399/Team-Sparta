@@ -17,7 +17,9 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
     private let labelStackView = UIStackView()
     private let currencyLabel = UILabel()
     private let countryLabel = UILabel()
+    private let rightStackView = UIStackView()
     private let rateLabel = UILabel()
+    private let favoritesButton = UIButton()
     
     override func setStyles() {
         
@@ -36,25 +38,43 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
             $0.font = .systemFont(ofSize: 14)
         }
         
+        rightStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 4
+        }
+        
         rateLabel.do {
             $0.textColor = .black
             $0.textAlignment = .right
             $0.font = .systemFont(ofSize: 16)
         }
+        
+        favoritesButton.do {
+            $0.setImage(UIImage(systemName: "star"), for: .normal)
+            $0.tintColor = .systemYellow
+        }
     }
     override func setLayout() {
-        contentView.addSubviews(labelStackView, rateLabel)
+        contentView.addSubviews(labelStackView, rightStackView)
         labelStackView.addArrangedSubviews(currencyLabel, countryLabel)
+        rightStackView.addArrangedSubviews(rateLabel, favoritesButton)
         
         labelStackView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
             $0.centerY.equalToSuperview()
         }
         
-        rateLabel.snp.makeConstraints {
+        rightStackView.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-16)
             $0.centerY.equalToSuperview()
+        }
+        
+        rateLabel.snp.makeConstraints {
             $0.width.equalTo(120)
+        }
+        
+        favoritesButton.snp.makeConstraints {
+            $0.height.width.equalTo(44)
         }
     }
     
@@ -62,8 +82,12 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
         currencyLabel.text = displayItem.code
         countryLabel.text = displayItem.country
         rateLabel.text = String(format: "%.4f", displayItem.rate)
-
-        countryLabel.isHidden = false
-        rateLabel.isHidden = false
+        
+        let imageName = displayItem.isFavorite ? "star.fill" : "star"
+        favoritesButton.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+    
+    func getFavoriteButton() -> UIButton {
+        return favoritesButton
     }
 }
