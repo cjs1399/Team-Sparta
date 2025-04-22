@@ -14,9 +14,9 @@ protocol FetchExchangeRateUseCase {
 }
 
 final class FetchExchangeRateUseCaseImpl: FetchExchangeRateUseCase {
-    private let repository: ExchangeRateRepository
+    private let repository: ExchangeRateRepositoryInterface
 
-    init(repository: ExchangeRateRepository) {
+    init(repository: ExchangeRateRepositoryInterface) {
         self.repository = repository
     }
 
