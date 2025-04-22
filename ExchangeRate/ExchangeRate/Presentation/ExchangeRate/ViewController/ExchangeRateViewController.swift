@@ -91,7 +91,7 @@ final class ExchangeRateViewController: BaseViewController {
             .subscribe(onNext: { [weak self] item in
                 /// 해당 구조는 AppDependencyFactory가 모든 의존성을 생성하고 ExchangeReateVC가 외부 이벤트(Cell 선택)에 따라 ViewModel이 생성되는 것.
                 /// AppDependencyFactory는 전체 앱에서 사용되는 의존성의 생성 책임을 갖는 팩토리입니다.
-                /// 각 ViewController는 자신이 사용할 ViewModel이나 UseCase 등을 직접 생성하지 않고, Factory에게 생성 책임을 위임하여 SRP를 지키고, 테스트 및 유지보수성을 높이는 구조
+                /// 각 ViewController는 자신이 사용할 ViewModel이나 UseCase 등을 직접 생성하지 않고, Factory에게 생성 책임을 위임
                 let calculatorVC = ExchangeCalculatorViewController(viewModel: AppDependencyFactory.makeExchangeCalculatorViewModel(item: item))
                 self?.navigationController?.pushViewController(calculatorVC, animated: true)
             })
