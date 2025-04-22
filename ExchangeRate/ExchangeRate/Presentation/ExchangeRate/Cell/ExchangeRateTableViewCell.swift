@@ -54,7 +54,8 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
         
         favoritesButton.do {
             $0.setImage(UIImage(systemName: "star"), for: .normal)
-            $0.tintColor = UIColor(named: "CustomFavoriteColor")
+            $0.tintColor = .systemYellow
+            // UIColor(named: "CustomFavoriteColor")
         }
         
         directionLabel.do {
