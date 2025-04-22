@@ -12,4 +12,5 @@ struct ExchangeRateItemDisplay {
     let code: String
     let country: String
     let rate: Double
+    var isFavorite: Bool
 }
