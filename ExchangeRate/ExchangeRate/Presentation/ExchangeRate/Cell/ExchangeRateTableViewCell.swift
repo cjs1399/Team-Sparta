@@ -24,6 +24,7 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
     
     override func setStyles() {
         backgroundColor = UIColor(named: "CustomBackgroundColor")
+        selectionStyle = .none
         
         labelStackView.do {
             $0.axis = .vertical
