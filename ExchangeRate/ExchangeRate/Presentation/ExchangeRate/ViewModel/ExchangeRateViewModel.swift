@@ -15,6 +15,7 @@ final class ExchangeRateViewModel: ViewModelProtocol {
     enum Action {
         case fetch
         case search(String)
+        case toggleFavorite(code: String, isFavorite: Bool)
     }
     
     struct State {
@@ -28,13 +29,23 @@ final class ExchangeRateViewModel: ViewModelProtocol {
     let state = State()
 
     // MARK: - Dependencies
+    
     private let disposeBag = DisposeBag()
     private let fetchUseCase: FetchExchangeRateUseCase
+    private let fetchFavoriteUseCase: FetchFavoriteCurrenciesUseCase
+    private let toggleFavoriteUseCase: ToggleFavoriteCurrencyUseCase
+    
     private var allItems = [ExchangeRateItem]()
 
     // MARK: - Init
-    init(fetchUseCase: FetchExchangeRateUseCase) {
+    init(
+        fetchUseCase: FetchExchangeRateUseCase,
+        fetchFavoriteUseCase: FetchFavoriteCurrenciesUseCase,
+        toggleFavoriteUseCase: ToggleFavoriteCurrencyUseCase
+    ) {
         self.fetchUseCase = fetchUseCase
+        self.fetchFavoriteUseCase = fetchFavoriteUseCase
+        self.toggleFavoriteUseCase = toggleFavoriteUseCase
         bindActions()
     }
 
@@ -47,6 +58,9 @@ final class ExchangeRateViewModel: ViewModelProtocol {
                 switch action {
                 case .fetch:
                     self.fetchRates()
+                case .toggleFavorite(let code, let isFavorite):
+                    toggleFavoriteUseCase.execute(code: code, isFavorite: isFavorite)
+                    filterItems(query: "")
                 case .search(let query):
                     self.filterItems(query: query)
                 }
@@ -79,8 +93,9 @@ final class ExchangeRateViewModel: ViewModelProtocol {
             .disposed(by: disposeBag)
     }
 
-    // MARK: - Filter
     private func filterItems(query: String) {
+        let favorites = fetchFavoriteUseCase.execute().map { $0.code }
+
         let filtered = allItems
             .filter {
                 query.isEmpty ||
@@ -91,11 +106,20 @@ final class ExchangeRateViewModel: ViewModelProtocol {
                 ExchangeRateItemDisplay(
                     code: $0.currencyCode,
                     country: CurrencyCountryMapper.shared.countryName(for: $0.currencyCode),
-                    rate: $0.rate
+                    rate: $0.rate,
+                    isFavorite: favorites.contains($0.currencyCode)
                 )
             }
 
-        state.filteredItems.accept(filtered)
+        let sorted = filtered.sorted {
+            if $0.isFavorite == $1.isFavorite {
+                return $0.code < $1.code
+            } else {
+                return $0.isFavorite && !$1.isFavorite
+            }
+        }
+        
+        state.filteredItems.accept(sorted)
     }
 }
 
