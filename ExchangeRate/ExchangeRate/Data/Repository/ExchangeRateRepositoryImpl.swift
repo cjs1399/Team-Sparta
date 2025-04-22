@@ -9,7 +9,7 @@ import Foundation
 
 import RxSwift
 
-final class ExchangeRateRepositoryImpl: ExchangeRateRepository {
+final class ExchangeRateRepositoryImpl: ExchangeRateRepositoryInterface {
     private let service: ExchangeRateService
 
     init(service: ExchangeRateService = ExchangeRateService()) {
