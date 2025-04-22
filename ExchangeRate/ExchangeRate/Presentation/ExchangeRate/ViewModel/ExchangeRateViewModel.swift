@@ -34,18 +34,22 @@ final class ExchangeRateViewModel: ViewModelProtocol {
     private let fetchUseCase: FetchExchangeRateUseCase
     private let fetchFavoriteUseCase: FetchFavoriteCurrenciesUseCase
     private let toggleFavoriteUseCase: ToggleFavoriteCurrencyUseCase
+    private let compareUseCase: CompareExchangeRateUseCase
+    private var rateChangeMap: [String: RateChangeDirection] = [:]
     
-    private var allItems = [ExchangeRateItem]()
+    private var allItems = [ExchangeRateItemEntity]()
 
     // MARK: - Init
     init(
         fetchUseCase: FetchExchangeRateUseCase,
         fetchFavoriteUseCase: FetchFavoriteCurrenciesUseCase,
-        toggleFavoriteUseCase: ToggleFavoriteCurrencyUseCase
+        toggleFavoriteUseCase: ToggleFavoriteCurrencyUseCase,
+        compareUseCase: CompareExchangeRateUseCase
     ) {
         self.fetchUseCase = fetchUseCase
         self.fetchFavoriteUseCase = fetchFavoriteUseCase
         self.toggleFavoriteUseCase = toggleFavoriteUseCase
+        self.compareUseCase = compareUseCase
         bindActions()
     }
 
@@ -73,15 +77,21 @@ final class ExchangeRateViewModel: ViewModelProtocol {
         state.isLoading.accept(true)
 
         fetchUseCase.execute(base: "USD")
-            .map { response in
-                response.rates.map { ExchangeRateItem(currencyCode: $0.key, rate: $0.value) }
-                    .sorted { $0.currencyCode < $1.currencyCode }
+            .map { response -> [ExchangeRateItemEntity] in
+                let timeUnix = Int(Date().timeIntervalSince1970)
+
+                self.rateChangeMap = (try? self.compareUseCase.execute(
+                    newItems: response.rates.map { .init(currencyCode: $0.key, rate: $0.value) },
+                    timeUnix: timeUnix
+                )) ?? [:]
+
+                return response.rates.map { ExchangeRateItemEntity(currencyCode: $0.key, rate: $0.value) }
             }
             .observe(on: MainScheduler.instance)
             .subscribe(
                 with: self,
                 onSuccess: { owner, items in
-                    owner.allItems = items
+                    owner.allItems = items.sorted { $0.currencyCode < $1.currencyCode }
                     owner.state.isLoading.accept(false)
                     owner.filterItems(query: "")
                 },
@@ -107,7 +117,8 @@ final class ExchangeRateViewModel: ViewModelProtocol {
                     code: $0.currencyCode,
                     country: CurrencyCountryMapper.shared.countryName(for: $0.currencyCode),
                     rate: $0.rate,
-                    isFavorite: favorites.contains($0.currencyCode)
+                    isFavorite: favorites.contains($0.currencyCode),
+                    direction: rateChangeMap[$0.currencyCode] ?? .none
                 )
             }
 
@@ -118,7 +129,7 @@ final class ExchangeRateViewModel: ViewModelProtocol {
                 return $0.isFavorite && !$1.isFavorite
             }
         }
-        
+
         state.filteredItems.accept(sorted)
     }
 }

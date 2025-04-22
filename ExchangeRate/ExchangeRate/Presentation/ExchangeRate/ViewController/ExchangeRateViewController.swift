@@ -86,7 +86,7 @@ final class ExchangeRateViewController: BaseViewController {
             .disposed(by: disposeBag)
         
 
-        // 셀 선택 → 계산기 화면으로 이동 히히
+        // 셀 선택 → 계산기 화면으로 이동
         contentView.tableView.rx.modelSelected(ExchangeRateItemDisplay.self)
             .subscribe(onNext: { [weak self] item in
                 /// 해당 구조는 AppDependencyFactory가 모든 의존성을 생성하고 ExchangeReateVC가 외부 이벤트(Cell 선택)에 따라 ViewModel이 생성되는 것.
