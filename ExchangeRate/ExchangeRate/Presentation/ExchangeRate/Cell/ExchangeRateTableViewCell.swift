@@ -20,6 +20,7 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
     private let rightStackView = UIStackView()
     private let rateLabel = UILabel()
     private let favoritesButton = UIButton()
+    private let directionLabel = UILabel()
     
     override func setStyles() {
         
@@ -53,11 +54,16 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
             $0.setImage(UIImage(systemName: "star"), for: .normal)
             $0.tintColor = .systemYellow
         }
+        
+        directionLabel.do {
+            $0.font = .systemFont(ofSize: 14)
+            $0.textAlignment = .center
+        }
     }
     override func setLayout() {
         contentView.addSubviews(labelStackView, rightStackView)
         labelStackView.addArrangedSubviews(currencyLabel, countryLabel)
-        rightStackView.addArrangedSubviews(rateLabel, favoritesButton)
+        rightStackView.addArrangedSubviews(rateLabel, directionLabel, favoritesButton)
         
         labelStackView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
@@ -73,18 +79,31 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
             $0.width.equalTo(120)
         }
         
+        directionLabel.snp.makeConstraints {
+            $0.width.equalTo(20)
+        }
+        
         favoritesButton.snp.makeConstraints {
             $0.height.width.equalTo(44)
         }
     }
-    
+
     func configure(displayItem: ExchangeRateItemDisplay) {
         currencyLabel.text = displayItem.code
         countryLabel.text = displayItem.country
         rateLabel.text = String(format: "%.4f", displayItem.rate)
-        
+
         let imageName = displayItem.isFavorite ? "star.fill" : "star"
         favoritesButton.setImage(UIImage(systemName: imageName), for: .normal)
+
+        switch displayItem.direction {
+        case .up:
+            directionLabel.text = "🔼"
+        case .down:
+            directionLabel.text = "🔽"
+        case .none:
+            directionLabel.text = ""
+        }
     }
     
     func getFavoriteButton() -> UIButton {
