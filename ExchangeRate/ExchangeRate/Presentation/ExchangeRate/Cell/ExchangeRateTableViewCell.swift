@@ -23,6 +23,7 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
     private let directionLabel = UILabel()
     
     override func setStyles() {
+        backgroundColor = UIColor(named: "CustomBackgroundColor")
         
         labelStackView.do {
             $0.axis = .vertical
@@ -30,12 +31,12 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
         }
         
         currencyLabel.do {
-            $0.textColor = .black
+            $0.textColor = UIColor(named: "CustomTextColor")
             $0.font = .systemFont(ofSize: 16)
         }
         
         countryLabel.do {
-            $0.textColor = .gray
+            $0.textColor = UIColor(named: "CustomSecondaryTextColor")
             $0.font = .systemFont(ofSize: 14)
         }
         
@@ -45,14 +46,14 @@ class ExchangeRateTableViewCell: BaseTableViewCell {
         }
         
         rateLabel.do {
-            $0.textColor = .black
+            $0.textColor = UIColor(named: "CustomTextColor")
             $0.textAlignment = .right
             $0.font = .systemFont(ofSize: 16)
         }
         
         favoritesButton.do {
             $0.setImage(UIImage(systemName: "star"), for: .normal)
-            $0.tintColor = .systemYellow
+            $0.tintColor = UIColor(named: "CustomFavoriteColor")
         }
         
         directionLabel.do {

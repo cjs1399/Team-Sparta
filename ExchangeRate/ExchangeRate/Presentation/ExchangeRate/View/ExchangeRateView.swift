@@ -23,22 +23,25 @@ final class ExchangeRateView: BaseView {
     // MARK: - Set UIComponents
 
     override func setStyles() {
-        backgroundColor = .white
+        backgroundColor = UIColor(named: "CustomBackgroundColor")
 
         searchBar.do {
             $0.placeholder = "통화 검색"
+            $0.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+            $0.backgroundColor = UIColor(named: "CustomBackgroundColor")
         }
         
         tableView.do {
             $0.register(ExchangeRateTableViewCell.self, forCellReuseIdentifier: "ExchangeRateTableViewCell")
             $0.separatorStyle = .none
             $0.rowHeight = 60
+            $0.backgroundColor = UIColor(named: "CustomBackgroundColor")
         }
         
         emptyLabel.do {
             $0.text = "검색 결과 없음"
             $0.textAlignment = .center
-            $0.textColor = .gray
+            $0.textColor = UIColor(named: "CustomSecondaryTextColor")
             $0.font = .systemFont(ofSize: 16, weight: .medium)
             $0.isHidden = true
         }

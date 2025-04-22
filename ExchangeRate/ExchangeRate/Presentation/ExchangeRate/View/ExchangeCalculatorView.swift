@@ -26,7 +26,7 @@ final class ExchangeCalculatorView: BaseView {
     // MARK: - Set UIComponents
 
     override func setStyles() {
-        backgroundColor = .white
+        backgroundColor = UIColor(named: "CustomBackgroundColor")
         
         labelStackView.do {
             $0.axis = .vertical
@@ -35,19 +35,19 @@ final class ExchangeCalculatorView: BaseView {
         }
         
         currencyLabel.do {
-            $0.text = "임시"
-            $0.textColor = .black
+            $0.textColor = UIColor(named: "CustomTextColor")
             $0.font = .systemFont(ofSize: 24, weight: .bold)
         }
         
         countryLabel.do {
-            $0.text = "임시"
-            $0.textColor = .gray
+            $0.textColor = UIColor(named: "CustomSecondaryTextColor")
             $0.font = .systemFont(ofSize: 16)
         }
         
         amountTextField.do {
-            $0.borderStyle = .roundedRect
+            $0.layer.borderWidth = 0.5
+            $0.layer.cornerRadius = 8
+            $0.layer.borderColor = UIColor(named: "CustomSecondaryTextColor")?.cgColor
             $0.keyboardType = .decimalPad
             $0.textAlignment = .center
             $0.placeholder = "달러(USD)를 입력하세요"
@@ -55,14 +55,14 @@ final class ExchangeCalculatorView: BaseView {
         
         convertButton.do {
             $0.setTitle("환율 계산", for: .normal)
-            $0.titleLabel?.textColor = .white
+            $0.titleLabel?.textColor = UIColor(named: "CustomTextColor")
             $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-            $0.backgroundColor = .systemBlue
+            $0.backgroundColor = UIColor(named: "CustomBottonColor")
             $0.layer.cornerRadius = 8
         }
         
         resultLabel.do {
-            $0.textColor = .black
+            $0.textColor = UIColor(named: "CustomTextColor")
             $0.font = .systemFont(ofSize: 20, weight: .medium)
             $0.textAlignment = .center
             $0.numberOfLines = 0
