@@ -42,7 +42,6 @@ class ExchangeCalculatorViewController: BaseViewController {
     override func bindViewModel() {
         contentView.convertButton.rx.tap
             .withLatestFrom(contentView.amountTextField.rx.text.orEmpty)
-            .compactMap { Double($0) }
             .bind(onNext: { [weak viewModel] value in
                 viewModel?.actionRelay.accept(.calculate(value))
             })
@@ -58,6 +57,12 @@ class ExchangeCalculatorViewController: BaseViewController {
 
         viewModel.state.country
             .bind(to: contentView.countryLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.state.errorMessage
+            .subscribe(onNext: { [weak self] message in
+                self?.showAlert(message: message)
+            })
             .disposed(by: disposeBag)
     }
 
