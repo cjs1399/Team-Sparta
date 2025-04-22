@@ -43,6 +43,7 @@ final class ExchangeRateViewController: BaseViewController {
     override func bindViewModel() {
         /// View의 사용자 입력(Action)을 ViewModel에 '전달'하고 ViewModel은 그에 대한 상태를 '반응'하여 UI를 출력한다는 흐름
         viewModel.actionRelay.accept(.fetch)
+    
 
         // 검색어 입력 -> 검색 액션 전달
         contentView.searchBar.rx.text.orEmpty
@@ -57,8 +58,23 @@ final class ExchangeRateViewController: BaseViewController {
             .bind(to: contentView.tableView.rx.items(
                 cellIdentifier: "ExchangeRateTableViewCell",
                 cellType: ExchangeRateTableViewCell.self
-            )) { _, item, cell in
+            )) { [weak self] _, item, cell in
+                guard let self else { return }
+
+                // 데이터 세팅
                 cell.configure(displayItem: item)
+
+                // 버튼 탭 시 CoreData 업데이트 + 리스트 갱신
+                cell.getFavoriteButton().rx.tap
+                    .subscribe(onNext: {
+                        let newState = !item.isFavorite
+                        self.viewModel.actionRelay.accept(.toggleFavorite(code: item.code, isFavorite: newState))
+
+                        // 현재 검색어 기준으로 다시 정렬 요청
+                        let currentQuery = self.contentView.searchBar.text ?? ""
+                        self.viewModel.actionRelay.accept(.search(currentQuery))
+                    })
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
 
@@ -68,6 +84,7 @@ final class ExchangeRateViewController: BaseViewController {
             .observe(on: MainScheduler.instance)
             .bind(to: contentView.emptyLabel.rx.isHidden)
             .disposed(by: disposeBag)
+        
 
         // 셀 선택 → 계산기 화면으로 이동 히히
         contentView.tableView.rx.modelSelected(ExchangeRateItemDisplay.self)
