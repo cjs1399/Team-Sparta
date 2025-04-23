@@ -323,3 +323,182 @@ SnapKit | UI Layout | SPM
 Then | UI 선언 | SPM
 
 <br>
+
+
+
+## Ch 3.앱 개발 입문 주차 (개인 과제)
+
+Issues: [Ch 3. 앱개발 숙련 주차 과제](https://github.com/cjs1399/Team-Sparta/issues/18)
+PR: [Ch 3. 앱개발 숙련 주차 과제 및 트러블 슈팅](https://github.com/cjs1399/Team-Sparta/pull/19)
+
+### 📖 Using Library
+
+라이브러리 | 사용 목적 | Management Tool
+:---------:|:----------:|:---------:
+CoreData | 자체 저장 |
+SnapKit | UI Layout | SPM
+Then | UI 선언 | SPM
+RxSwift | 비동기적 데이터 흐름 작업 | SPM
+
+
+<details>
+<summary><b>Lv 1</b></summary>
+<div markdown="1">
+🧑🏻‍💻 Level 1 - 메인 UI 기초 작업 + 데이터 불러오기
+
+- `UILabel`, `UITableView`, 을 이용해서 기본적인 UI 를 구성합니다.
+- Cell 의 높이는 자유롭게 지정합니다.
+- 외부 Open API를 통해 실시간 환율 데이터를 불러오고 UI(테이블 뷰)에 반영해보세요.
+- 사용 API: GET https://open.er-api.com/v6/latest/USD
+    - url의 마지막 경로가 기준이 되는 통화. /USD 로 조회시 1달러 기준으로 다른 통화 환율이 표시됨.
+    KRW로 바꾸어서 요청을 보내면 1원 기준으로 다른 통화 환율이 표시됨
+- 응답 데이터를 `Codable`을 사용해 파싱하고, `ViewModel` 또는 `DataService`에서 관리합니다.
+- 파싱한 데이터를 테이블 뷰에 표시합니다.
+    - 소수점 4자리까지만 표시합니다
+- 데이터가 없는 경우 "데이터를 불러올 수 없습니다" `Alert` 표시
+</div>
+</details>
+
+<details>
+<summary><b>Lv 2</b></summary>
+<div markdown="1">
+<aside>
+🧑🏻‍💻 Level2 - 메인 화면 구성
+
+- 메인 화면을 구성하고 환율 데이터를 표시할 기본 UI를 구성해보세요.
+- `UISearchBar`와 `UITableView`를 SnapKit을 활용해 구성합니다.
+- 셀에는 다음 정보를 포함합니다:
+    - 통화 코드 (예: KRW)
+    - 국가명 (예: 대한민국)
+    - 환율 값 (예: 1466.12)
+- 오토레이아웃을 포함한 UI 디버깅 상황 중 Xcode 툴을 사용하여 문제 정의 + 문제 해결한 사례에 대해 그 해결 과정에 대해 기록합니다(1개 이상 필수)
+</aside>
+</div>
+</details>
+<details>
+<summary><b>Lv 3</b></summary>
+<div markdown="1">
+<aside>
+🧑🏻‍💻 Level 3 - 필터링 기능 구현
+
+- 통화 코드 또는 국가명을 검색할 수 있는 필터링 기능을 구현해보세요.
+- 검색결과가 없을 경우 "검색 결과 없음" 표시
+- 검색어가 비어있으면 전체 리스트 노출
+</aside>
+</div>
+</details>
+<details>
+<summary><b>Lv 4</b></summary>
+<div markdown="1">
+<aside>
+🧑🏻‍💻 Level 4 - 환율 계산기로 이동
+
+- 테이블 셀을 클릭했을 때, 환율 계산기로 이동하는 기능을 구현합니다.
+- `UINavigationController.pushViewController()`를 사용하여 화면 전환
+- 계산기 화면 구성 요소:
+    - 통화 코드 및 국가 이름 레이블
+    - 입력 필드 (`UITextField`)
+    - 변환 버튼 (`UIButton`)
+    - 결과 표시 (`UILabel`)
+</aside>
+</div>
+</details>
+<details>
+<summary><b>Lv 5</b></summary>
+<div markdown="1">
+<aside>
+🧑🏻‍💻 Level 5 - 입력한 금액 실시간 반영
+
+- 환율 계산기 화면에서 입력한 금액을 실시간으로 환산하는 기능을 구현해보세요.
+    - 방법 1
+        - https://open.er-api.com/v6/latest/USD api를 동일하게 사용해서 특정 currency의 환율을 가져와서 계산
+    - 방법 2
+        - 환율 정보 화면에서 이미 api를 호출했으므로, 셀에 있는 환율 정보를 가지고 계산기 화면에서 활용
+- 잘못된 입력값(빈칸, 숫자 아님 등)은 `Alert` 처리
+    - 빈칸일 경우 : 금액을 입력해주세요
+    - 숫자 아닐 경우 : 올바른 숫자를 입력해주세요
+- 결과값은 소수점 둘째자리로 반올림하여 표시
+</aside>
+</div>
+</details>
+<details>
+<summary><b>Lv 6</b></summary>
+<div markdown="1">
+🧑🏻‍💻 Level 6 - MVVM 패턴을 도입하여 View와 로직을 분리
+
+- ViewModel에서 API 호출, 필터링, 환율 계산 등의 로직 처리
+- ViewController는 ViewModel의 데이터를 바인딩하고 UI만 담당
+- ViewModel은 아래의 ViewModelProtocol을 채택하여 구현
+- ViewController에서 ViewModel의 State를 클로저로 바인딩
+</div>
+</details>
+<details>
+<summary><b>Lv 7</b></summary>
+<div markdown="1">
+<aside>
+🧑🏻‍💻 Level 7 - 즐겨찾기 기능 상단 고정
+
+- 즐겨찾기(⭐️) 기능을 추가해, 즐겨찾은 통화를 리스트 상단에 고정해보세요.
+- 셀 우측에 ⭐ / ☆ 버튼 추가
+    - 이미지 이름 : star.fill / star
+- 클릭 시 해당 통화 코드가 `CoreData`에 저장/삭제됨
+- 리스트 출력 시 즐겨찾기 데이터를 먼저 상단에 배치
+    - 즐겨찾기된 데이터도 알파벳 오름차순 정렬이 되어야 함
+- 즐겨찾기 상태에 따라 ⭐ / ☆ UI를 다르게 표시
+</aside>
+</div>
+</details>
+<details>
+<summary><b>Lv 8</b></summary>
+<div markdown="1">
+<aside>
+🧑🏻‍💻 Level 8 - 상승 🔼 하락 🔽  여부 표시
+
+- 환율 데이터를 캐싱하고, 이전 데이터와 비교해 상승 🔼 / 하락 🔽 여부를 표시해보세요.
+- 앱 실행 시 이전 데이터를 `CoreData`에서 로드
+- 새 데이터를 받아오면 이전 값과 비교 후 방향 아이콘 표시
+- 아이콘 표시 기준:
+    - `abs(new - old) > 0.01` 일때 상승/하락 아이콘 표시
+    - `abs(new - old) <= 0.01` 일때는 아이콘 표시하지 않기(아이콘의 너비만큼 여백으로 처리하여 환율 숫자의 우측이 정렬되도록 함)
+</aside>
+</div>
+</details>
+
+<details>
+<summary><b>Lv 9</b></summary>
+<div markdown="1">
+<aside>
+🧑🏻‍💻 Level 9 - 다크모드 구현
+
+- 다크모드 UI를 구현해보세요.
+- 시스템 색상`label`, `systemBackground`, `secondaryLabel`등을 사용하여 자동으로 다크모드에 대응합니다.
+- 또는 Asset Catalog에서 Any/Dark 색상 설정을 활용할 수 있습니다.
+</aside>
+</div>
+</details>
+<details>
+<summary><b>Lv 10</b></summary>
+<div markdown="1">
+<aside>
+🧑🏻‍💻 Level 10 - 앱 상태 저장 및 복원
+
+- 사용자가 마지막으로 본 화면 정보를 CoreData에 저장합니다.
+- 앱을 재시작하면 환율 리스트 화면, 환율 계산기 화면 중 마지막으로 본 화면으로 이동합니다
+    - 환율 계산기 화면은 어떤 통화에 대한 계산기 화면인지까지만 이동하고 입력 숫자, 결과값은 저장하지 않습니다
+    - 환율 계산기 화면에서의 환율은 coreData에 저장된 환율을 가져옵니다
+- `AppDelegate` 혹은 `SceneDelegate` 를 이용합니다
+</aside>
+</div>
+</details>
+<details>
+<summary><b>Lv 11</b></summary>
+<div markdown="1">
+Level 11 -  메모리 이슈 디버깅 및 개선 경험 문서화
+</div>
+</details>
+<details>
+<summary><b>Lv 12</b></summary>
+<div markdown="1">
+Level 12 -  Clean Architecture 적용
+</div>
+</details>
