@@ -1,0 +1,17 @@
+//
+//  UIStackView+.swift
+//  ExchangeRate
+//
+//  Created by 천성우 on 4/17/25.
+//
+
+import UIKit
+
+
+extension UIStackView {
+    func addArrangedSubviews(_ views: UIView...) {
+        views.forEach {
+            self.addArrangedSubview($0)
+        }
+    }
+}
