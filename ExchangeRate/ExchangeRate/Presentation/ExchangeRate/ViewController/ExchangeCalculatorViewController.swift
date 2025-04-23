@@ -35,6 +35,7 @@ class ExchangeCalculatorViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
         
     override func bindViewModel() {
@@ -74,6 +75,8 @@ class ExchangeCalculatorViewController: BaseViewController {
     }
     
     @objc private func didTapBackButton() {
+        let saveUseCase = AppDependencyFactory.makeSaveLastScreenUseCase()
+        saveUseCase.execute(screen: .list)
         navigationController?.popViewController(animated: true)
     }
 

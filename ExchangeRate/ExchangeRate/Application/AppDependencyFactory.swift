@@ -49,4 +49,20 @@ final class AppDependencyFactory {
         let cachedRepo = CachedExchangeRateRepository(context: CoreDataStack.shared.context)
         return CompareExchangeRateUseCaseImpl(repository: cachedRepo)
     }
+    
+    static func makeLastScreenRepository() -> LastScreenRepositoryInterface {
+        LastScreenRepository()
+    }
+
+    static func makeSaveLastScreenUseCase() -> SaveLastScreenUseCase {
+        SaveLastScreenUseCaseImpl(repository: makeLastScreenRepository())
+    }
+
+    static func makeLoadLastScreenUseCase() -> LoadLastScreenUseCase {
+        LoadLastScreenUseCaseImpl(repository: makeLastScreenRepository())
+    }
+    
+    static func makeCachedRateRepository() -> CachedExchangeRateRepository {
+        return CachedExchangeRateRepository(context: CoreDataStack.shared.context)
+    }
 }

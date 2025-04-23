@@ -39,6 +39,12 @@ final class ExchangeRateViewController: BaseViewController {
     override func loadView() {
         view = contentView
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let saveUseCase = AppDependencyFactory.makeSaveLastScreenUseCase()
+        saveUseCase.execute(screen: .list)
+    }
 
     override func bindViewModel() {
         /// View의 사용자 입력(Action)을 ViewModel에 '전달'하고 ViewModel은 그에 대한 상태를 '반응'하여 UI를 출력한다는 흐름
@@ -89,6 +95,8 @@ final class ExchangeRateViewController: BaseViewController {
         // 셀 선택 → 계산기 화면으로 이동
         contentView.tableView.rx.modelSelected(ExchangeRateItemDisplay.self)
             .subscribe(onNext: { [weak self] item in
+                let saveUseCase = AppDependencyFactory.makeSaveLastScreenUseCase()
+                saveUseCase.execute(screen: .calculator(currencyCode: item.code))
                 /// 해당 구조는 AppDependencyFactory가 모든 의존성을 생성하고 ExchangeReateVC가 외부 이벤트(Cell 선택)에 따라 ViewModel이 생성되는 것.
                 /// AppDependencyFactory는 전체 앱에서 사용되는 의존성의 생성 책임을 갖는 팩토리입니다.
                 /// 각 ViewController는 자신이 사용할 ViewModel이나 UseCase 등을 직접 생성하지 않고, Factory에게 생성 책임을 위임
