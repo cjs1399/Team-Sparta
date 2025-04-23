@@ -50,11 +50,14 @@ final class CachedExchangeRateRepository: CachedExchangeRateRepositoryInterface 
             : .none
     }
     
-    func save(currencyCode: String, rate: Double, timeUnix: Int) throws {
-        guard !currencyCode.isEmpty else { return }
+    func save(currencyCode: String?, rate: Double, timeUnix: Int) throws {
+        guard let code = currencyCode, !code.isEmpty else {
+            print("currencyCode가 nil이거나 빈 값입니다.")
+            return
+        }
 
         let cached = CachedExchangeRate(context: context)
-        cached.currencyCode = currencyCode
+        cached.currencyCode = code
         cached.rate = rate
         cached.timeUnix = Int64(timeUnix)
 

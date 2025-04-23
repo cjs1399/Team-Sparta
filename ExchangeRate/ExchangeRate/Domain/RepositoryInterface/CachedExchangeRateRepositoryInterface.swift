@@ -10,5 +10,5 @@ import Foundation
 protocol CachedExchangeRateRepositoryInterface {
     func isNeedCompare(timeUnix: Int) throws -> Bool
     func compareCurrency(currencyCode: String, newCurrencyItem: ExchangeRateItemEntity) throws -> RateChangeDirection
-    func save(currencyCode: String, rate: Double, timeUnix: Int) throws
+    func save(currencyCode: String?, rate: Double, timeUnix: Int) throws
 }
