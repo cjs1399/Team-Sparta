@@ -23,11 +23,17 @@ final class CachedExchangeRateRepository: CachedExchangeRateRepositoryInterface 
         return result?.map(CoreDataModelMapper.toEntity) ?? []
     }
 
-    /// 해당 코드는 하루가 아니라... 1분 단위로 구현이 되어있네요... 수정을 하겠습니다...
+    
     func isNeedCompare(timeUnix: Int) throws -> Bool {
         let cached = try context.fetch(CachedExchangeRate.fetchRequest())
         guard let latest = cached.first else { return true }
-        return latest.timeUnix != Int64(timeUnix)
+
+        let calendar = Calendar.current
+        let newDate = Date(timeIntervalSince1970: TimeInterval(timeUnix))
+        let cachedDate = Date(timeIntervalSince1970: TimeInterval(latest.timeUnix))
+
+        let isSameDay = calendar.isDate(newDate, inSameDayAs: cachedDate)
+        return !isSameDay
     }
 
     func compareCurrency(currencyCode: String, newCurrencyItem: ExchangeRateItemEntity) throws -> RateChangeDirection {
@@ -43,12 +49,26 @@ final class CachedExchangeRateRepository: CachedExchangeRateRepositoryInterface 
             ? (diff > 0 ? .up : .down)
             : .none
     }
-
+    
     func save(currencyCode: String, rate: Double, timeUnix: Int) throws {
+        guard !currencyCode.isEmpty else { return }
+
         let cached = CachedExchangeRate(context: context)
         cached.currencyCode = currencyCode
         cached.rate = rate
         cached.timeUnix = Int64(timeUnix)
+
         try context.save()
+    }
+    
+    func fetchRate(for code: String) -> Double? {
+        let request: NSFetchRequest<CachedExchangeRate> = CachedExchangeRate.fetchRequest()
+        request.predicate = NSPredicate(format: "currencyCode == %@", code)
+
+        if let cached = try? context.fetch(request).first {
+            return cached.rate
+        }
+
+        return nil
     }
 }
