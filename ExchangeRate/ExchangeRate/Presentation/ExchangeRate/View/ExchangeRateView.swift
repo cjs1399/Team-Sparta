@@ -29,6 +29,11 @@ final class ExchangeRateView: BaseView {
             $0.placeholder = "통화 검색"
             $0.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
             $0.backgroundColor = UIColor(named: "CustomBackgroundColor")
+            
+            if let textField = $0.value(forKey: "searchField") as? UITextField {
+                textField.backgroundColor = UIColor(named: "CustomSearchFieldColor")
+                textField.textColor = UIColor(named: "CustomTextColor")
+            }
         }
         
         tableView.do {
